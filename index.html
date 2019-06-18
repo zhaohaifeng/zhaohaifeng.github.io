@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="PAP">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="PAP">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PAP">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>PAP</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d390ccd966597ac9b2edaf325fe96e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAP</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home menu-item-active">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/02/paxos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/02/paxos/" class="post-title-link" itemprop="url">分布式协议paxos讲解</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-02 22:38:22" itemprop="dateCreated datePublished" datetime="2019-04-02T22:38:22+08:00">2019-04-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h2><p>说到分布式，首先要说的是CAP。<br>CAP，指的是：</p>
+<ul>
+<li><strong>C</strong>onsistency 一致性，所有节点之间数据是保持一致的。</li>
+<li><strong>A</strong>vailability 可用性，向服务发起的请求可以立即得到非错的响应。</li>
+<li><strong>P</strong>artition tolerance 分区容错性，可以容忍由于分区导致的一些异常问题，比容网络延时、通讯异常、服务宕机等等。</li>
+</ul>
+<p>CAP理论是由加州大学伯克利分校的计算机科学家<strong>埃里克·布鲁尔</strong>提出的猜想，时在一个分布式系统中，这三者无法同时满足。后续这个理论得到了证明从而成为一个定理。</p>
+<h3 id="CAP不可兼容"><a href="#CAP不可兼容" class="headerlink" title="CAP不可兼容"></a>CAP不可兼容</h3><p>对于大多数系统，<strong>P</strong>分区容错性时最重要的性质（不然还讲分布式做什么:)）因此这套体系关键点在于C一致性和A可用性的矛盾。即在一个拥有大量节点的服务中，如果要保证高可用性，就要有一定的容灾能力，设计上数据存储在多个服务器当中。但在多节点的数据的传输随时可能由于节点宕机、网络延迟等等问题导致数据不可达，那么节点在响应数据请求时，响应结果可能会出现不一致的情况。  如果要保持一致，只能降低可用性（比如在数据不一致时服务不可用等等）。</p>
+<p>现在流行的分布式协议，其实都是在CAP中，尤其是CA中找寻一个适当的平衡点，从而有了Base理论：既然无法做到高可用强一致性，那么就选择<strong>基本可用最终一致性</strong>。</p>
+<ul>
+<li><strong>BA</strong> Basically Available 基本可用性；</li>
+<li><strong>S</strong>oft 软状态；</li>
+<li><strong>E</strong>ventual Consistency 最终一致性。</li>
+</ul>
+<h3 id="AP和CP并非绝对"><a href="#AP和CP并非绝对" class="headerlink" title="AP和CP并非绝对"></a>AP和CP并非绝对</h3><p>同时在笔者看来，CAP虽是一个定理，但每个分布式协议或者分布式实现，并不是非黑即白的。不是说一个协议，要么说CP，可用性不强，要么是AP，一致性不强。 而是会找寻一些平衡，按照自身的理念去提供最好的服务。</p>
+<p>比如，zookeeper是哪种呢？网上大部分会说，zk是CP的， 但笔者看来却并不是。<br>之所以说zk是cp，是因为zk的writer是全部转发到leader来处理，并在大多数follower认可之后写入成功。因此只要写入了数据就一定是有效且不会丢失的。 但当leader服务宕机之后，需要重新选举leader，才可以继续提供服务，因此zk并不是高可用的。</p>
+<p>但在read时，zk为了提高吞吐率，client只要读取follower的数据就ok，那么zk就并非一个强一致的应用。虽然可以通过follower的sync（实时获取leader的最新数据）来处理成<strong>读强一致性</strong>，但可用性就牺牲太大了。 </p>
+<p>同时，zk还提供了一种readonly状态机制，即使在zk 进行leader选举时，也可以提供只读服务。那么在一个read远远多于write的场景，zk甚至可以说是满足AP的，read弱一致性，但高可用。</p>
+<p>这个世界上没有银弹，对于分布式尤其如此。 固然可能随着技术的更新换代，有些协议或者技术不符合当前场景，但大部分其实是没有优劣之分，只是各有取舍，根据业务的实际场景选择合适的技术方式方案，才是我们开发者所真正需要掌握的技能。</p>
+<h2 id="Paxos"><a href="#Paxos" class="headerlink" title="Paxos"></a>Paxos</h2><p>paxos是1990年由莱斯利·兰伯特（英语：Leslie Lamport，LaTeX中的「La」）于1990年提出的一种基于消息传递且具有高度容错特性的一致性算法。</p>
+<h3 id="Basic-Paxos"><a href="#Basic-Paxos" class="headerlink" title="Basic Paxos"></a>Basic Paxos</h3><p>basic paxos是paxos的最初版本，也是最基础的分布式协议。<br>在协议中，会有几个角色：</p>
+<ul>
+<li>proposer 提案者。</li>
+<li>acceptor 提案处理者，针对提案进行判断，通过则提案成为决议。</li>
+<li>learner 获取所有被批准的提案（决议），用于返回给请求方。</li>
+</ul>
+<p>paxos决议的过程如下（摘自<a href="https://zh.wikipedia.org/wiki/Paxos%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">维基百科</a>）：</p>
+<ol>
+<li>准备（prepare）阶段：<ol>
+<li>proposer选择一个提案编号n并将prepare请求发送给acceptors中的一个多数派；</li>
+<li>acceptor收到prepare消息后，如果提案的编号大于它已经回复的所有prepare消息(回复消息表示接受accept)，则acceptor将自己上次接受的提案回复给proposer，并承诺不再回复小于n的提案；</li>
+</ol>
+</li>
+<li>批准（accept）阶段：<ol>
+<li>当一个proposer收到了多数acceptors对prepare的回复后，就进入批准阶段。它要向回复prepare请求的acceptors发送accept请求，包括编号n和根据P2c决定的value（如果根据P2c没有已经接受的value，那么它可以自由决定value）。</li>
+<li>在不违背自己向其他proposer的承诺的前提下，acceptor收到accept请求后即批准这个请求。</li>
+</ol>
+</li>
+</ol>
+<p>流程图如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">假设之前的最新提案号是N-1</span><br><span class="line">Client   Proposer      Acceptor     Learner</span><br><span class="line">   |         |          |  |  |       |  | </span><br><span class="line">   X--------&gt;|          |  |  |       |  |  Request 提交数据变更V</span><br><span class="line">   |         X---------&gt;|-&gt;|-&gt;|       |  |  Prepare(N) prepare1.1 proposer进行提案。新的提案号为N</span><br><span class="line">   |         |&lt;---------X--X--X       |  |  Promise(N,&#123;Va,Vb,Vc&#125;) prepare1.2 三台Acceptor发现都是最新的版本，因此做出承诺（不再											   回复小于N的提案）</span><br><span class="line">   |         X---------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,V) accept1.1 proposer发现多数acceptors回复通过，则提交批准请求</span><br><span class="line">   |         |&lt;---------X--X--X------&gt;|-&gt;|  Accepted(N,V) acceptor批准请求，并同步到learners</span><br><span class="line">   |&lt;---------------------------------X--X  Response learners处理准备的决议（V），并返回给客户端,该流程有6步。</span><br><span class="line">   |         |          |  |  |       |  |</span><br></pre></td></tr></table></figure></p>
+<p>流程通过时比较顺利，但在并发环境下，可能会出现资源浪费和活锁：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">假设当前最新提案号都是N-1</span><br><span class="line">Client   Proposer      Acceptor     Learner</span><br><span class="line"> | |       | |          |  |  |       |  | </span><br><span class="line"> X -------&gt;| |          |  |  |       |  |  Request(V) Client1 提交数据变更V</span><br><span class="line"> | X--------&gt;|          |  |  |       |  |  Request(W) Client2 提交数据变更W</span><br><span class="line"> | |	   X-----------&gt;|-&gt;|-&gt;|       |  |  Prepare(N,V) proposer1进行提案，新的提案号是N </span><br><span class="line"> | |       |&lt;-----------X--X--X       |  |  Promise(N,V) prepare1.2 三台Acceptor发现都是最新的版本，因此做出承诺（不再回复小于N的提案）</span><br><span class="line"> | |       | X---------&gt;|-&gt;|-&gt;|       |  |  Prepare(N,W) proposer2进行提案，此时并不知道p1的提案，因此提案号也是N。</span><br><span class="line"> | |       | |&lt;---------X--X--X       |  |  Reject(N,W) 根据prepare1.2的协议，acceptors已经回复了proposer1编号为N的提案，针对proposer2,直接否决，并返回最新的提案号为N。</span><br><span class="line"> | |       | X---------&gt;|-&gt;|-&gt;|       |  |  Prepare(N+1,W) proposer2发现最新的提案号是N，自己保留的已经失效，因此更新提案号(N+1)重新提案。</span><br><span class="line"> | |       | |&lt;---------X--X--X       |  |  Promise(N+1,W) Acceptor判断新的提案编号较新，因此做出承诺（不再回复小于N+1的提案）</span><br><span class="line"> | |       X-----------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,V) 此时proposer1对于proposer2的提交号全局编号的变化并不知情，只知道自身之前提交的prepare已经被acceptors promise了，因此发起批准请求。</span><br><span class="line"> | |       |&lt;-----------|&lt;-|&lt;-|       |  |  Reject(N,V) accept1.2 根据协议，由于acceptors批准p1的请求会违背对于proposer2的承诺，因此拒绝，并返回最能的编号N+1</span><br><span class="line"> | |       X-----------&gt;|-&gt;|-&gt;|       |  |  Prepare(N+2,V) proposer1发现最新的提案号时N+1，自己的已经实效，因此更新提案号(N+2)重新提案。</span><br><span class="line"> .......................</span><br></pre></td></tr></table></figure></p>
+<p>以此类推，proposer1和proposer2的循环由于prepare阶段和accept阶段的交替进行可能无限下去。之所以是活锁是因为如果某个proposer在prepare之后马上accept，则可以解开这个循环。 不过随着节点和并发请求的增多，即使不会出现活锁，也会有大量的资源消耗。</p>
+<h3 id="Multi-Paxos"><a href="#Multi-Paxos" class="headerlink" title="Multi-Paxos"></a>Multi-Paxos</h3><p>Basic-Paxos之所以出现活锁和计算浪费，是由于basic-paxos有两个阶段，多个proposer会提交多个提案，这些版本在不同阶段中会出现时序上的冲突。</p>
+<p>Multi-Paxos为了解决这个问题，设定了一个leader角色。所有的提案，都由leader来发起。同时，由于只有一个proposer（就是leader）来进行提案，避免了编号紊乱的问题，因此可以跳过prepare阶段，直接进行accept:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Client     Leader       Acceptor     Learner</span><br><span class="line"> X----------&gt;|          |  |  |       |  |  Request(V) </span><br><span class="line"> | X--------&gt;|          |  |  |       |  |  Request(W)</span><br><span class="line"> | |         X---------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,I+1,V)  进行提案，新的轮次是N，编号I+1</span><br><span class="line"> | |         |&lt;---------X--X--X------&gt;|-&gt;|  Accepted(N,I+1,V) 有两个请求到达leader，但leader先处理第一个</span><br><span class="line"> |&lt;-----------------------------------X--X  Response(V)  client1 的请求处理完成，之后在提案第二个。</span><br><span class="line"> | |         X---------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,I+2,W) </span><br><span class="line"> | |         |&lt;---------X--X--X------&gt;|-&gt;|  Accepted(N,I+2,W)</span><br><span class="line"> | |&lt;---------------------------------X--X  Response(W) 该流程有4步（注意，这里有两个提交,每个提交时4步）</span><br><span class="line"> | |         |          |  |  |       |  |</span><br><span class="line">通过leader对时序的管理，省略了prepare步骤，减少了2步消息的传输，并且不会出现活锁。</span><br></pre></td></tr></table></figure></p>
+<p>其中，leader的产生是由选举算法产生（下文讲述）。每一轮选举，N递增。 在此维度上增加I，（在某轮选举中递增的编号）。</p>
+<h3 id="Fast-Paxos"><a href="#Fast-Paxos" class="headerlink" title="Fast-Paxos"></a>Fast-Paxos</h3><p>在并发提交时，会产生大量的冲突，因此Multi-Paxos增加了独一无二的leader角色负责提案。而Fast-Paxos的设计是，客户端直接提交请求导acceptors，减少一步leader的转发；只有当出现消息冲突时，再由leader来负责协调。 这种方式，非常适合并发冲突不严重时处理。<br>fast-paxos有两个分支，一个有leader的协调者机制，一个是无leader角色的自动协调机制。<br>我们先看有leader的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Client  Leader      Acceptor      Learner</span><br><span class="line">   |      |        |  |  |  |      |  |</span><br><span class="line">   |      |        |  |  |  |      |  |</span><br><span class="line">   X--------------&gt;|-&gt;|-&gt;|-&gt;|      |  |  Accept!(N,I,W)  直接提案</span><br><span class="line">   |      |&lt;-------X--X--X--X-----&gt;|-&gt;|  Accepted(N,I,W) 提案确认，成为决议</span><br><span class="line">   |&lt;------------------------------X--X  Response(W)  可以看到，在没有冲突时，该流程有3步,会比multi-paxos减少一步流程。</span><br><span class="line">   |      |        |  |  |  |      |  |</span><br><span class="line"> | X--------------?|-?|-?|-?|      |  |  Accept!(N,I,V)  client1 提案V</span><br><span class="line"> X----------------?|-?|-?|-?|      |  |  Accept!(N,I,W)  client2 提案w</span><br><span class="line"> | |      |        |  |  |  |      |  |</span><br><span class="line"> | |      |        |  |  |  |      |  |  !! Acceptors disagree on value</span><br><span class="line"> | |      |&lt;-------X--X-&gt;|-&gt;|-----&gt;|-&gt;|  Accepted(N,I,V) client1 的提案V被前两个acceptors批准，并通知leader和learner</span><br><span class="line"> | |      |&lt;-------|&lt;-|&lt;-X--X-----&gt;|-&gt;|  Accepted(N,I,W) client2 的提案W被后两个acceptors批准，并通知leader和learner</span><br><span class="line"> | |      |        |  |  |  |      |  |  由于acceptors的意见不一致，并且没有一个获得多数派，因此learner不会做处理。</span><br><span class="line"> | |      |        |  |  |  |      |  |  !! Detect collision &amp; recover</span><br><span class="line"> | |      X-------&gt;|-&gt;|-&gt;|-&gt;|      |  |  Accept!(N+1,I,W) leader发现无法没有一个决议形成多数派，那么根据协调算法，指定W作为提案，重新提交。N+1，用来标识更高的优先级。</span><br><span class="line"> | |      |&lt;-------X--X--X--X-----&gt;|-&gt;|  Accepted(N+1,I,W)  acceptors获取到leader的提案，并且编号时N+1（这时client无论再如何重复提交，也无法影响这个决议，因为cleint的提案只能是（N,I+X,X）），N的优先级更高，I增加到多少都无用。</span><br><span class="line"> |&lt;--------------------------------X--X  Response(W)  learner 发现多数派决议，并返回客户端。 这里可以看到，出现冲突时，流程的复杂度时比multi更高。</span><br></pre></td></tr></table></figure></p>
+<p>上述的fast和multi,都有一个leader角色。但leader从哪里来呢，当leader宕机时该怎么产生新的leader呢？这就是分布式中比较有名的选举算法，而fast-paxos的另一个分支—<strong>无leader角色的自动协调机制</strong>就是为了解决这个问题。 zk的zab协议，以及etcd的raft协议，都是默认采用fast-paxos的这个分支为基础进行leader选举的。</p>
+<p>无leader的自动协调，其实就是协调一种固有的机制，那zk为例子，当出现冲突时：</p>
+<ul>
+<li>优先选择事务zxid更大的。 zxid是一个64位的数据，前32位是epoch（选举轮次），后32位是事务Id。服务重启时，各个server的zxid相同，只有服务正在运行中leader宕机时，zxid才会不同。通过这个机制，会选择zxid更大的服务器作为leader（zxid最大，数据也最新）</li>
+<li>如果zxid相同，优先选择serverId更大的。 serverId是服务器的唯一id，可以区分大小。</li>
+</ul>
+<p>通过这种机制，没有leader，也可以合并client和learner:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Client         Servers</span><br><span class="line"> |  |         |  |  |  |</span><br><span class="line"> |  |         |  |  |  |  !! Concurrent conflicting proposals</span><br><span class="line"> |  |         |  |  |  |  !!   received in different order</span><br><span class="line"> |  |         |  |  |  |  !!   by the Servers</span><br><span class="line"> |  X--------?|-?|-?|-?|  Accept!(N,I,V) client2 提案V</span><br><span class="line"> X-----------?|-?|-?|-?|  Accept!(N,I,W) client1 提案W</span><br><span class="line"> |  |         |  |  |  |</span><br><span class="line"> |  |         |  |  |  |  !! Servers disagree on value</span><br><span class="line"> |  |         X&lt;&gt;X-&gt;|-&gt;|  Accepted(N,I,V) 前两台servers批准了V，并向其它servers发送提案。</span><br><span class="line"> |  |         |&lt;-|&lt;-X&lt;&gt;X  Accepted(N,I,W) 后两台servers批准了W，并想其它servers发送提案。</span><br><span class="line"> |  |         |  |  |  |</span><br><span class="line"> |  |         |  |  |  |  !! Detect collision &amp; recover</span><br><span class="line"> |  |         X&lt;&gt;X&lt;&gt;X&lt;&gt;X  Accepted(N+1,I,W)  servers都收到到其它servers的提案，由于没有形成大多数，因此进行自动协调，由于N和I相同，因此假设根据后两台servers的机器编号更大，修正提案，批准后两台机器的提案W。</span><br><span class="line"> |&lt;-----------X--X--X--X  Response(W)  W提案形成大多数，形成决议，回复W。</span><br><span class="line"> |  |         |  |  |  |</span><br></pre></td></tr></table></figure></p>
+<p>这里只是一个大体的流程，实际上<code>X&lt;&gt;X&lt;&gt;X&lt;&gt;X  Accepted(N+1,I,W)</code> 这一步远比流程中复杂的多，如果有机会再进行说明吧。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/10/“互联网医院”和“医院-互联网”/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/10/“互联网医院”和“医院-互联网”/" class="post-title-link" itemprop="url">“互联网医院”和“医院 互联网+”</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-10 21:30:44" itemprop="dateCreated datePublished" datetime="2019-03-10T21:30:44+08:00">2019-03-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/随笔/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近每次经过天府大道，都路过一个建筑工地招牌，上面写着：“今天，你互联网+了吗？”。随着目前国内经济的低迷，以及整体互联网行业的不给力，计算机产业都转向瞄准了传统行业，进行行业技术升级，所谓的“供给侧改革”。医疗也不例外，医院的app、小程序、公众号雨后春笋般涌现，确实给患者带来了很多的便利，而这些都是“互联网+”的体现。<br>不过最近国家又发出来一个政策，“互联网医院”（其实这个政策几年前就有，在银川试点，只不过后来被叫停，去年重启），而这有何“医院 互联网+”有什么区别呢？<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/10/“互联网医院”和“医院-互联网”/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/06/《流浪地球》电影观后感/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/06/《流浪地球》电影观后感/" class="post-title-link" itemprop="url">《流浪地球》电影观后感</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-06 22:27:51" itemprop="dateCreated datePublished" datetime="2019-02-06T22:27:51+08:00">2019-02-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/其它/" itemprop="url" rel="index"><span itemprop="name">其它</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/head1.jpeg" alt="header"><br>和家人观看了最近很火的《流浪地球》，用我爸的话说，没想到中国的科幻电影可以拍的这么好。不得不说，在这个只要舍得投入就能请到国外大牌特效团队的现在，一个好故事好剧本并能加工成电影，作者刘慈欣和导演郭帆太难得可贵。虽然看影评有些吐槽说两个小年轻开始有些烦人，故事有些主旋律，但我觉得这对整个电影起到画龙点睛的作用。</p>
+<p>地球需要流浪2500年，100代人。这是什么概念，从2500年前到现在，地球的文明发生了多少变革，谁能知道这流浪的2500年见，在这个资源匮乏、生活条件恶劣的时代，人类的文明又将发生什么走向？是疯狂麦克斯的野蛮暴力，还是十二只猴子中的等级森严，亦或是云图中的回归原始？电影都没有讲述。电影讲述的是流浪中众多危机的一个篇章，也是几个年轻人成长的故事。虽然他们一开始有些脑残，看着着实气人，但地球的未来终归要交到他们手中，而欣慰的是，无论是初期叛逆暴躁的的户口，胆小怕事的朵朵，耍滑头的Mike，以及后面遇到的一一，他们在上一代人的影响下，见证了牺牲，获得了勇气，懂的了责任，以及最重要的-看到了希望。他们也都成长，成熟，能够担当起重任，而这，也就是文明的真正精髓：传承！“贝加尔湖的冰可能要2000年后才能化成水”，“没事，我还有孩子，还有孩子的孩子”。</p>
+<p>电影没有像其它灾难电影一样，讲述高官贵富为了自身安全产生无谓的勾心斗角，而是时时刻刻表现着全人类为了文明的延续做出的牺牲和努力。    当地球没有希望逃离木星时，人类做的选择是让领航船抛弃地球，独自奔向新的家园。而当最后的希望出现时，不同人种不同国家的人又可以聚在一起，创造最终的奇迹。  这让我想到了巴别塔的故事，神明担心人类团结起来过于强大，于是让人类只能说不同的语言，不能沟通，而木星，别称朱庇特，正是神话中最强大的神明的名字（虽是不同文化体系的）。而正式电影的第一个镜头（不算前面的前奏），就是刘培强拿起来一个同声翻译器，笑：）。 当真正的天灾出现时，面对太阳的衰亡，面对木星的引力，人类是多么的无能和渺小；但当人类没有了语言的隔阂，团结起来，却又可以克服重重困难，虽是主旋律，但又何妨，这才是科幻电影，应该去向世人表达的。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/02/hystrix使用和问题分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/02/02/hystrix使用和问题分析/" class="post-title-link" itemprop="url">hystrix使用和问题分析</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-02 16:53:41" itemprop="dateCreated datePublished" datetime="2019-02-02T16:53:41+08:00">2019-02-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>笔者公司使用的是k8s在搭建公司的微服务框架，没有使用java系的spring cloud。在rpc框架选择上，为了降低他人的学习成本，没有使用thrift、grpc等rpc框架，而是使用了以http协议为主的“伪rpc框架”feign。<br>当前还是使用良好，不过由于一些业务问题，单一的http协议在网络调度复杂的微服务框架中，还是会带来一些调度问题。因此最近引入了hystrix，来提升整体系统网络调用上的健壮性。</p>
+<p>首先介绍一下Hystrix，因为github主页的原意：<br>Hystrix是一个延迟和容错库，旨在隔离对远程系统、服务和第三方库的调用，在复杂的分布式系统中，故障是无法避免的，它可以阻止级联故障，并提供整体系统的容错能力。</p>
+<p>Hystrix提供如下的能力：</p>
+<ol>
+<li>延迟和容错能力 阻止级联故障，优雅的降级，快速失败快速回复。基于线程和信号量的隔离，并可以熔断。</li>
+<li>实时操作：实时监控并变更配置。 拥有快速的反馈机制 报警-&gt;做出决定-&gt;修改配置-&gt;查看变更结果。</li>
+<li>并发：并行执行，并发获取请求缓存。通过请求折叠自动批处理。</li>
+</ol>
+<p>关于Hystrix的使用，github的wiki已经介绍的够详细了，这里列出一些我们使用的要点，和遇到的问题。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/02/02/hystrix使用和问题分析/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/12/druid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/01/12/druid/" class="post-title-link" itemprop="url">Druid连接池源码分析</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-12 16:19:08" itemprop="dateCreated datePublished" datetime="2019-01-12T16:19:08+08:00">2019-01-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>对于连接池，有三个重要逻辑:<strong>获取连接</strong> ，<strong>创建连接</strong>,<strong>维持连接</strong> 以及<strong>回收连接</strong>。<br>同时由于涉及到占用数据库的连接资源，因此连接池需要严格维护几个数字：</p>
+<ul>
+<li>maxPoolCount：也可以叫maxActiveCount连接池的最大活跃连接数量。</li>
+<li>minPoolCount：也可以叫minIdleCount，连接池的最少保持空闲连接数量。</li>
+</ul>
+<h2 id="获取连接"><a href="#获取连接" class="headerlink" title="获取连接"></a>获取连接</h2><p>druid的连接池，我们先看下几个主要的城边变量：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stats 这些都是统计使用，暂时忽略</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">long</span>                    recycleErrorCount         = <span class="number">0L</span>;</span><br><span class="line">   。。。。。</span><br><span class="line">   <span class="comment">// store</span></span><br><span class="line">   <span class="comment">// 真正的连接池存储</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">volatile</span> DruidConnectionHolder[] connections;</span><br><span class="line">   <span class="comment">// 当前的连接数量</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">int</span>                              poolingCount              = <span class="number">0</span>;</span><br><span class="line">   <span class="comment">// 当前活跃的链接数量</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">int</span>                              activeCount               = <span class="number">0</span>;</span><br><span class="line">   <span class="comment">// 当前废弃的链接数量</span></span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">long</span>                             discardCount              = <span class="number">0</span>;</span><br><span class="line">   ......</span><br><span class="line">   <span class="comment">//</span></span><br><span class="line">   <span class="keyword">private</span> DruidConnectionHolder[]          evictConnections;</span><br><span class="line">   <span class="keyword">private</span> DruidConnectionHolder[]          keepAliveConnections;</span><br></pre></td></tr></table></figure></p>
+<p>在DruidDataSource的父类DruidAbstractDataSource中，也有几个重要的属性<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">    <span class="comment">// 初始化容量</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">volatile</span> <span class="keyword">int</span>                             initialSize                               = DEFAULT_INITIAL_SIZE;</span><br><span class="line">    <span class="comment">// 最大连接数</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">volatile</span> <span class="keyword">int</span>                             maxActive                                 = DEFAULT_MAX_ACTIVE_SIZE;</span><br><span class="line">    <span class="comment">// 最少空闲连接数</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">volatile</span> <span class="keyword">int</span>                             minIdle                                   = DEFAULT_MIN_IDLE;</span><br><span class="line">    <span class="comment">//最大空闲连接数，已经废弃</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">volatile</span> <span class="keyword">int</span>                             maxIdle                                   = DEFAULT_MAX_IDLE;</span><br><span class="line">    <span class="comment">// 最大等待时长</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">volatile</span> <span class="keyword">long</span>                            maxWait                                   = DEFAULT_MAX_WAIT;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span>                                      notFullTimeoutRetryCount                  = <span class="number">0</span>;</span><br><span class="line">....</span><br><span class="line"><span class="comment">// 全局锁</span></span><br><span class="line">    <span class="keyword">protected</span> ReentrantLock                            lock;</span><br><span class="line">    <span class="keyword">protected</span> Condition                                notEmpty;</span><br><span class="line">    <span class="keyword">protected</span> Condition                                empty;</span><br><span class="line">    <span class="comment">// 活跃连接锁</span></span><br><span class="line">    <span class="keyword">protected</span> ReentrantLock                            activeConnectionLock                      = <span class="keyword">new</span> ReentrantLock();</span><br></pre></td></tr></table></figure></p>
+<p>druid本质上是一个生产消费者模型，因此其中的lock是druid最重要的一个锁，下面的empty是lock的两个消费者condition，notEmpty是生产者condition。该lock可以根据配置生成公平锁或非公平锁，默认是非公平，效率较高。</p>
+<p>看代码能发现，除了一些统计数据使用Atomic的cas实现之外，大部分的关键数据和count的变更都是依赖lock实现线程安全的。</p>
+<p>现在是关键的getConnection()的实现,参见getConnectionInternal():<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> DruidPooledConnection <span class="title">getConnectionInternal</span><span class="params">(<span class="keyword">long</span> maxWait)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="comment">//一些常规检测</span></span><br><span class="line">        ....</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">boolean</span> createDirect = <span class="keyword">false</span>;;) &#123;</span><br><span class="line"><span class="comment">//缺省情况下，一个DruidDataSource会使用两个线程分别用于创建连接和销毁或检测连接。</span></span><br><span class="line"><span class="comment">//在分库分表的某些场景，可能需要数百甚至数千个数据库，因此会创建大量的线程。这里暂时只讲解普通连接。</span></span><br><span class="line">        ....</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//全局锁 获取连接</span></span><br><span class="line">                lock.lockInterruptibly();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                connectErrorCountUpdater.incrementAndGet(<span class="keyword">this</span>);</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> SQLException(<span class="string">"interrupt"</span>, e);</span><br><span class="line">            &#125;</span><br><span class="line">            ...</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                <span class="comment">// 增加连接数</span></span><br><span class="line">                 connectCount++;</span><br><span class="line">                <span class="comment">//根据是否有超时时间获取连接</span></span><br><span class="line">                <span class="keyword">if</span> (maxWait &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    holder = pollLast(nanos);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    holder = takeLast();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">                <span class="comment">// 释放全局锁</span></span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们在看takeLast()方法，本质上是一个生产-消费者模型的消费者，获取连接。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取连接，注意，这时线程还持有之前获取的的全局lock，因此不会出现并发问题。</span></span><br><span class="line"><span class="function">DruidConnectionHolder <span class="title">takeLast</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// poolingCount就是可用连接数</span></span><br><span class="line">        <span class="keyword">while</span> (poolingCount == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//池子里没有，等待连接，唤醒empty</span></span><br><span class="line">            emptySignal(); <span class="comment">// send signal to CreateThread create connection</span></span><br><span class="line"></span><br><span class="line">           ....</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// notEmpty等待，释放lock锁，等待唤醒</span></span><br><span class="line">                notEmpty.await(); <span class="comment">// signal by recycle or creator</span></span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                notEmptyWaitThreadCount--;</span><br><span class="line">            &#125;</span><br><span class="line">            notEmptyWaitCount++;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;...</span><br><span class="line">    <span class="comment">// decrement poolingCount;</span></span><br><span class="line">    decrementPoolingCount();</span><br><span class="line">    <span class="comment">// 清除connections中相应的连接。</span></span><br><span class="line">    DruidConnectionHolder last = connections[poolingCount];</span><br><span class="line">    connections[poolingCount] = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> last;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="创建连接"><a href="#创建连接" class="headerlink" title="创建连接"></a>创建连接</h2><p>在init时会创建初始的连接，这里暂时不表。<br>另一个是在获取连接的时候发现连接不够而创建，参见emptySignal()方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">emptySignal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (createScheduler == <span class="keyword">null</span>) &#123;</span><br><span class="line">        empty.signal();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (createTaskCount &gt;= maxCreateTaskCount) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (activeCount + poolingCount + createTaskCount &gt;= maxActive) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    createTaskCount++;</span><br><span class="line">    CreateConnectionTask task = <span class="keyword">new</span> CreateConnectionTask();</span><br><span class="line">    <span class="keyword">this</span>.createSchedulerFuture = createScheduler.submit(task);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>有个容易混淆的是，在emptySignal()这个方法中，看起来是做了一些判断，然后创建了创建连接的任务交给createScheduler执行，但普通使用情况中，createScheduler=null，所以直接就返回了。</p>
+<p>那我们看看普通场景下真正创建连接的producer：CreateConnectionThread，而不是schedule使用的CreateConnectionTask。CreateConnectionThread在连接池初始化时创建，在连接池销毁时销毁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    initedLatch.countDown();</span><br><span class="line">    <span class="keyword">long</span> lastDiscardCount = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> errorCount = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//循环检测</span></span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">        <span class="comment">// addLast</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 被唤醒时，全局加锁</span></span><br><span class="line">            lock.lockInterruptibly();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e2) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        producerStartCount++;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> discardCount = DruidDataSource.<span class="keyword">this</span>.discardCount;</span><br><span class="line">        <span class="keyword">boolean</span> discardChanged = discardCount - lastDiscardCount &gt; <span class="number">0</span>;</span><br><span class="line">        lastDiscardCount = discardCount;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">boolean</span> emptyWait = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (createError != <span class="keyword">null</span></span><br><span class="line">                    &amp;&amp; poolingCount == <span class="number">0</span></span><br><span class="line">                    &amp;&amp; !discardChanged) &#123;</span><br><span class="line">                emptyWait = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (emptyWait</span><br><span class="line">                    &amp;&amp; asyncInit &amp;&amp; createCount &lt; initialSize) &#123;</span><br><span class="line">                emptyWait = <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (emptyWait) &#123;</span><br><span class="line">                <span class="comment">// 必须存在线程等待，才创建连接</span></span><br><span class="line">                <span class="keyword">if</span> (poolingCount &gt;= notEmptyWaitThreadCount <span class="comment">//</span></span><br><span class="line">                        &amp;&amp; !(keepAlive &amp;&amp; activeCount + poolingCount &lt; minIdle)) &#123;</span><br><span class="line">                    emptyWaitCount1++;</span><br><span class="line">                    empty.await();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 防止创建超过maxActive数量的连接</span></span><br><span class="line">				<span class="comment">// 这种情况是虽然有现成在等待连接，但连接池已经达到最大连接数，因此await()</span></span><br><span class="line">                <span class="keyword">if</span> (activeCount + poolingCount &gt;= maxActive) &#123;</span><br><span class="line">                    emptyWaitCount2++;</span><br><span class="line">                    empty.await();</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			<span class="comment">// 一些错误处理</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="comment">// 释放索</span></span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">// 如果需要创建物理连接</span></span><br><span class="line">        PhysicalConnectionInfo connection = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">//创建物理连接</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            startConnectionCount.incrementAndGet();</span><br><span class="line">            connection = createPhysicalConnection();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">			<span class="comment">// 错误处理</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (RuntimeException e) &#123;</span><br><span class="line">			<span class="comment">// 错误处理</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Error e) &#123;</span><br><span class="line">			<span class="comment">// 错误处理</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (connection == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 存放连接</span></span><br><span class="line">		<span class="comment">// 这里需要注意的是，有可能存放失败，说明创建了多于的连接，因此关闭</span></span><br><span class="line">        <span class="keyword">if</span> (!result) &#123;</span><br><span class="line">            JdbcUtils.close(connection.getPhysicalConnection());</span><br><span class="line">            LOG.info(<span class="string">"put physical connection to pool failed."</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        errorCount = <span class="number">0</span>; <span class="comment">// reset errorCount</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面分析，当消费者发现无连接可用时，会唤醒生成者，而生产者发现最大连接数已满，再次await。这带来一个性能问题：在高并发情况下，如果连接数已满，新发起的连接请求都会经过这一次消费者await，生产者被notify，然后再次await的场景，产生大量的线程切换，这是一笔不菲的消耗。<br>为什么不在消费者获取连接的时候去检测是否连接已满呢？只有连接数不足的情况下才去唤醒emptySignal()。</p>
+<h2 id="维持连接"><a href="#维持连接" class="headerlink" title="维持连接"></a>维持连接</h2><p>Druid使用在启动时会创建一个DestoryTask，放在schedule线程池，默认每分钟执行一次shrink方法来维持连接，同时也会将超时的连接废弃掉，这里我们只看shrink，参见代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shrink</span><span class="params">(<span class="keyword">boolean</span> checkTime, <span class="keyword">boolean</span> keepAlive)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//全局锁</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> evictCount = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> keepAliveCount = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!inited) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">//这里代码比较多，简单来说就是在所有连接中，找出哪些存活时间太久(maxEvictableIdleTimeMillis)需要释放，哪些需要keepalive。</span></span><br><span class="line">		<span class="comment">//同时需要判断灵位一个属性，minIdle，最少连接数。</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">//这里有个关键步骤，将所有要处理的链接从主池子connections里去掉，后续keepalive将或者的连接加回来。</span></span><br><span class="line">	    <span class="keyword">int</span> removeCount = evictCount + keepAliveCount;</span><br><span class="line">	    <span class="keyword">if</span> (removeCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			System.arraycopy(connections, removeCount, connections, <span class="number">0</span>, poolingCount - removeCount);</span><br><span class="line">			Arrays.fill(connections, poolingCount - removeCount, poolingCount, <span class="keyword">null</span>);</span><br><span class="line">			poolingCount -= removeCount;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 释放存活时间过长的连接</span></span><br><span class="line">    <span class="keyword">if</span> (evictCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; evictCount; ++i) &#123;</span><br><span class="line">            DruidConnectionHolder item = evictConnections[i];</span><br><span class="line">            Connection connection = item.getConnection();</span><br><span class="line">            JdbcUtils.close(connection);</span><br><span class="line">            destroyCount.incrementAndGet();</span><br><span class="line">        &#125;</span><br><span class="line">        Arrays.fill(evictConnections, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (keepAliveCount &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.getDataSourceStat().addKeepAliveCheckCount(keepAliveCount);</span><br><span class="line">        <span class="comment">// keep order</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = keepAliveCount - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">            DruidConnectionHolder holer = keepAliveConnections[i];</span><br><span class="line">            Connection connection = holer.getConnection();</span><br><span class="line">            holer.incrementKeepAliveCheckCount();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">boolean</span> validate = <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="comment">// 重新验证连接是否可用。</span></span><br><span class="line">                <span class="keyword">this</span>.validateConnection(connection);</span><br><span class="line">                validate = <span class="keyword">true</span>;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable error) &#123;</span><br><span class="line">                <span class="keyword">if</span> (LOG.isDebugEnabled()) &#123;</span><br><span class="line">                    LOG.debug(<span class="string">"keepAliveErr"</span>, error);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// skip</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// 连接可用，加回主连接池，不可能关闭。</span></span><br><span class="line">            <span class="keyword">if</span> (validate) &#123;</span><br><span class="line">                holer.lastActiveTimeMillis = System.currentTimeMillis();</span><br><span class="line">                put(holer);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                JdbcUtils.close(connection);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        Arrays.fill(keepAliveConnections, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>值得注意的是，Druid为每种数据库实现了不同逻辑的isValidateConnection()方法，通常检测Valid的方法是调用一个简单的sql语句，但很多数据库都提供了不同的高效手段，比如通过mysql的ping方法实现高效检测。</p>
+<h2 id="回收连接"><a href="#回收连接" class="headerlink" title="回收连接"></a>回收连接</h2><p>在Connection的生命周期中，使用完以此连接，回调用Connection.close()方法。<br>Druid自定义DruidPooledConnection实现了close方法，不是关闭连接，而是调用DruidDataSource回收。<br>这里笔者就不赘述了，大家查看DruidDataSource.recyle()方法即可，逻辑比较简单，只是判断条件比较多。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Druid使用多线程中的常见案例生产者-消费者模型来构建整个并发体系，采用ReenTrantLock作为技术基础，高效的实现了数据库连接池。同时，它还有这丰富的统计模型进行数据库使用数据分析（希望后面有机会分析）。<br>但有些遗憾的是，Druid对于CAS模型使用较少，锁场景比较多，在高并发情况下线程调度还是会消耗不少的时间。看源代码发现，Druid应该有两套开发思路，一种是在核心的资源调度上用ReetTrantLock，而在统计场景中较多的使用了CAS,没有形成很好的统一。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/Rocketmq-vs-Kafak-产品对比/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/12/11/Rocketmq-vs-Kafak-产品对比/" class="post-title-link" itemprop="url">Rocketmq vs Kafak 产品对比</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-12-11 20:01:00" itemprop="dateCreated datePublished" datetime="2018-12-11T20:01:00+08:00">2018-12-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>目前消息中间件产品比较多了，之前使用的都是阿里的rocketmq.最近阿里云新上线了kafka，于是我做了相关调研，是否需要更换。</p>
+</blockquote>
+<p>我们先来看看相同点：</p>
+<h4 id="高吞吐量"><a href="#高吞吐量" class="headerlink" title="高吞吐量"></a>高吞吐量</h4><p>两个mq都是通过日志的形式实现消息的持久化，同时rocketmq也支持同步刷盘，提高单机可靠性。</p>
+<h4 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h4><p>两个mq都支持同步和异步replica。<br>rocketmq：master-slaver主备同步。<br>kafka：较为复杂，实质上是通过partition多follower的方式冗余。</p>
+<h4 id="高度负载均衡"><a href="#高度负载均衡" class="headerlink" title="高度负载均衡"></a>高度负载均衡</h4><p>发送负载均衡，消费负载均衡</p>
+<h4 id="消息消费实时性"><a href="#消息消费实时性" class="headerlink" title="消息消费实时性"></a>消息消费实时性</h4><p>rocketmq：长轮询<br>kafka：之前是短轮询，0.8版本之后支持长轮询<br>ps：为什么都是长轮询，而不是push？因为消息的消费速度不确定，采用长轮询的方式，可以让消费者控制消息的获取速度。如果用push，可能会出现消费者消费速度较慢mq就将新的消息推送过来的场景。</p>
+<p>但同时，由于架构不同，两个mq也是有比较大的区别,下面一一讲起：</p>
+<h3 id="kafka架构"><a href="#kafka架构" class="headerlink" title="kafka架构"></a>kafka架构</h3><p><img src="/images/mq/0.png" alt><br>zookeeper: 整个消息服务可用性的保障,存储消息服务中的所有topic以及partition的leader-follower的关系。<br>controller: kafka的partition存在leader-follower即主备的关系。初期是靠zk来选举，但后续发现随着partition数量的增加，导致zk的竞争非常激烈。不得已，kafka做了一个升级，加入了controller角色。 当服务启动时，zookeepr只需要竞选出一个broker作为controller,controller来指定partition的leader-follower关系,并将相应的信息存储到zk中。<br>broker: 普通的消息服务器，内部有多个partition，可能会升级为controller。</p>
+<p><img src="/images/mq/2.png" alt><br>在kafka中，一个topic会被拆分成多个partition实现负载均衡，这些parition就被controller分配到多个broker中（多对多关系），每一个broker中的parition，都对于一个日志文件（加入一个broker中有不同topic的5个paritition，则有5个partition文件），这个文件相互隔离，互不干扰。</p>
+<p><img src="/images/mq/3.png" alt><br>同时，每个partition会有多个replica，通过controller来指定leader-follower的关系。</p>
+<p>producer在发送消息时，根据策略指定partition或者随机或者其它策略选择partition发送。consumer根据数量是一对一消费还是一个consumer消费多个partition（同一topic）情况下。需要主要的是，一个partition同时只能被一个consumer消费，因此如果consumer的数量大于partition的数量，那么是会有consumer收不到消息。</p>
+<p>每个partition对应一个write offset和read offset，日志顺序写入，提高消息吞吐率。consumer顺序读消息，通过不同的策略移动read offset（比如获取消息就更新offset，或者commit消费成功之后再移动）,即使consumer挂掉，新的也会沿着上次的offset读取消息。</p>
+<h3 id="rocketmq架构"><a href="#rocketmq架构" class="headerlink" title="rocketmq架构"></a>rocketmq架构</h3><p>再看下rocketmq的基本架构图：</p>
+<p><img src="/images/mq/1.png" alt><br>介绍一个这几个角色<br>name server: rocketmq自己实现的一套服务发现和注册服务，每个nameserver的机器互相不会通信，但每个服务器都会和nameserver通信。<br>master-slaver：主备服务器，一个master可能对应多个slaver。producer和consumer都通过nameserver找到相应的master工作，当master挂掉之后，consumer只可以从slaver读消息，producer不能再向master写消息，但会通过负载找寻其它可以写入的master。 master和slaver的服务器是初始配置好的，不会由于宕机而动态切换。</p>
+<p><img src="/images/mq/4.png" alt><br>rocketmq的producer也是通过各种策略将消息分发到不同的服务器中，但与kafka不同的是，rocketmq的每个服务器上，都只有一个日志文件，叫做commitlog,多个topic的消息会同时写入到一个commitlog中。那么它是怎么做到区分不同消息的呢？这就需要一个新的模块：consume queue。</p>
+<p>发送消息时，会在消息中注明是哪个topic。写入日志时,broker中的所有topic顺序写入commitlog，但会基于配置分化出不同的consumer queue，每个queue对应一个read offset，剩下的就和kafka相同了。</p>
+<p>如果queue较多，这不还是随机读取了吗？rocketmq 使用pagecache技术，类似于计算机系统的swapcache来解决这个问题，多个queue对应多个cache区间，所以rocketmq的使用时要多占用一些内存的。</p>
+<h2 id="对比总结"><a href="#对比总结" class="headerlink" title="对比总结"></a>对比总结</h2><p>通过上面的论述就可以发现问题，理论上，kafka的吞吐量峰值会更高，因为在日志刷盘时，kafka是同时写入多个文件，假如服务器有多个硬盘，会有多套IO可以并发刷盘，而rocketmq只有单个。同时，kafka的极限可靠性也比rocketmq强，单说broker，不考虑负载的情况下，即使broker只剩下一台，kafka依然可以保障运行，但rocketmq的master全部挂掉之后producer就无法写入消息来，只能人工介入。</p>
+<p>但rocketmq同样有优势，第一就是架构简单，没有重型的zookeeper和选举策略，也没有controller这种控制角色，所有的信息更多的是基于配置的形式完成，虽然没有那么自动，但后期的维护和迭代升级也会更方便，未知的和不确定性的性能瓶颈会更少。<br>kafka是基于日志系统诞生的产品，关注的是高吞吐量，而rocketmq是阿里在电商和更多复杂业务中孕育的互联网化产品，提供更多的服务功能，比如事务消息、定时消息等等，而且基于它的架构，当topic数量较大时也不会产生什么问题，但kafka就会急剧的性能下降。因为kakfa的每个parition对应一个文件，topic越多，partition越多,每个broker要并发写入的文件也会更多，达到一定阈值，自然负载就下来了。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/08/stm-cvs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2015/01/08/stm-cvs/" class="post-title-link" itemprop="url">STM vs CAS</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2015-01-08 00:00:00" itemprop="dateCreated datePublished" datetime="2015-01-08T00:00:00+08:00">2015-01-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>学习了几天的clojure，接触比较多的一个名词，就是STM（software transactional memory），软件事务内存。</p>
+<h2 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h2><p>说stm之前，先说说跟STM比较相似的CAS</p>
+<p>在多线程领域，并发控制一直是个大难题。使用互斥锁虽然可以隔离共享变量的访问，但是一个资源同时只能被一个线程占用的时候，并发性能就会急剧下降。在java中，ReadWriteLock读写分离锁，ReentrantLock增加锁的伸缩灵活性，都是种治标不治本的方式。</p>
+<p>于是就诞生了基于乐观索概念，通过版本(标识号，version，多种形式）控制数据访问的的无锁并发。java中的CAS就是基于此原理。</p>
+<h2 id="STM"><a href="#STM" class="headerlink" title="STM"></a>STM</h2><p>软件事务内存也是基于乐观锁的一种实现形式。说到事务，一般想到的就是数据库,而stm的事务内存，跟数据库中mvcc非常像。只不过stm是在内存中实现的而已。</p>
+<p>它相比CAS有什么优点:</p>
+<p>更灵活。当处理复杂逻辑时，简单对象肯定无法满足需求，java中需要借助于AtomicReference，通过对象的比较实现CAS，那么在编码的时候，就需要知道，哪些对象可能出现并发危险。STM却可以将复杂的函数逻辑放到事务中，不用关心哪些数据会出现冲突,这和数据库的理念类似。</p>
+<p>但这里有几个问题，需要在以后的学习中去解答：</p>
+<ul>
+<li>因为是基于内存的版本实现，所以在高并发中，内存消耗会很高。数据库可以使用这种方式，因为数据库的并发连接本身就不会多，而且数据库是基于硬盘的存储，消耗高也是可以接受的。而stm如果在服务器中应用，在高并发模式下，会消耗大量的内存来处理事务了。   所以stm更适合cpu密集型的应用，比如Storm？</li>
+<li>既然STM这么强大，为什么java没有应用。做不到，不屑于做，还是发现有隐患而没有去做？ 首先不可能是做不到，因为clojure也是基于jvm虚拟机的，干儿子都做得到，凭什么java这个亲儿子做不到。那么为什么java没有做呢？</li>
+</ul>
+<p>慢慢研究吧。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/12/05/spring-websocket-chat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2014/12/05/spring-websocket-chat/" class="post-title-link" itemprop="url">基于spring websocket开发聊天功能的研究实战</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2014-12-05 10:00:00" itemprop="dateCreated datePublished" datetime="2014-12-05T10:00:00+08:00">2014-12-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上一篇中我简单说了一下我们项目的构想，其中有一个环节是需要开发一个web聊天功能。这个功能是基于spring4.0 新推出的对websocket支持，和SOckJS以及Stomp开发的，这里简单讲解一下。</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2014/12/05/spring-websocket-chat/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/11/26/springmvc-exception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2014/11/26/springmvc-exception/" class="post-title-link" itemprop="url">springmvc 自定义异常处理 无法解析spring内部异常的分析</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2014-11-26 00:00:00" itemprop="dateCreated datePublished" datetime="2014-11-26T00:00:00+08:00">2014-11-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一直在使用springmvc来当做后台应用的controller。最近发现一个问题，就是客户端做了一次数据处理，报了500异常，但是再服务端却没有任何异常输出。尽管我做了自定义异常处理：</p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2014/11/26/springmvc-exception/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/10/02/httpclient/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2014/10/02/httpclient/" class="post-title-link" itemprop="url">HttpClient相关优化</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2014-10-02 00:00:00" itemprop="dateCreated datePublished" datetime="2014-10-02T00:00:00+08:00">2014-10-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在测试应用的时候，发现当连接很多的时候，多线程下的http连接并不比单线程的快多少，很疑惑，于是就研究了一下httpClient。<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2014/10/02/httpclient/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </p></div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="zhaohaifeng">
+            
+              <p class="site-author-name" itemprop="name">zhaohaifeng</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaohaifeng</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

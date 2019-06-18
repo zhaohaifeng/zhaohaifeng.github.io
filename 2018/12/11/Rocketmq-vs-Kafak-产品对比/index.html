@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="目前消息中间件产品比较多了，之前使用的都是阿里的rocketmq.最近阿里云新上线了kafka，于是我做了相关调研，是否需要更换。  我们先来看看相同点： 高吞吐量两个mq都是通过日志的形式实现消息的持久化，同时rocketmq也支持同步刷盘，提高单机可靠性。 高可用两个mq都支持同步和异步replica。rocketmq：master-slaver主备同步。kafka：较为复杂，实质上是通过p">
+<meta name="keywords" content="mq,kafak,rocketmq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rocketmq vs Kafak 产品对比">
+<meta property="og:url" content="http://yoursite.com/2018/12/11/Rocketmq-vs-Kafak-产品对比/index.html">
+<meta property="og:site_name" content="PAP">
+<meta property="og:description" content="目前消息中间件产品比较多了，之前使用的都是阿里的rocketmq.最近阿里云新上线了kafka，于是我做了相关调研，是否需要更换。  我们先来看看相同点： 高吞吐量两个mq都是通过日志的形式实现消息的持久化，同时rocketmq也支持同步刷盘，提高单机可靠性。 高可用两个mq都支持同步和异步replica。rocketmq：master-slaver主备同步。kafka：较为复杂，实质上是通过p">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/mq/0.png">
+<meta property="og:image" content="http://yoursite.com/images/mq/2.png">
+<meta property="og:image" content="http://yoursite.com/images/mq/3.png">
+<meta property="og:image" content="http://yoursite.com/images/mq/1.png">
+<meta property="og:image" content="http://yoursite.com/images/mq/4.png">
+<meta property="og:updated_time" content="2019-06-18T12:45:44.669Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rocketmq vs Kafak 产品对比">
+<meta name="twitter:description" content="目前消息中间件产品比较多了，之前使用的都是阿里的rocketmq.最近阿里云新上线了kafka，于是我做了相关调研，是否需要更换。  我们先来看看相同点： 高吞吐量两个mq都是通过日志的形式实现消息的持久化，同时rocketmq也支持同步刷盘，提高单机可靠性。 高可用两个mq都支持同步和异步replica。rocketmq：master-slaver主备同步。kafka：较为复杂，实质上是通过p">
+<meta name="twitter:image" content="http://yoursite.com/images/mq/0.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2018/12/11/Rocketmq-vs-Kafak-产品对比/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Rocketmq vs Kafak 产品对比 | PAP</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d390ccd966597ac9b2edaf325fe96e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAP</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/11/Rocketmq-vs-Kafak-产品对比/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Rocketmq vs Kafak 产品对比
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-12-11 20:01:00" itemprop="dateCreated datePublished" datetime="2018-12-11T20:01:00+08:00">2018-12-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>目前消息中间件产品比较多了，之前使用的都是阿里的rocketmq.最近阿里云新上线了kafka，于是我做了相关调研，是否需要更换。</p>
+</blockquote>
+<p>我们先来看看相同点：</p>
+<h4 id="高吞吐量"><a href="#高吞吐量" class="headerlink" title="高吞吐量"></a>高吞吐量</h4><p>两个mq都是通过日志的形式实现消息的持久化，同时rocketmq也支持同步刷盘，提高单机可靠性。</p>
+<h4 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h4><p>两个mq都支持同步和异步replica。<br>rocketmq：master-slaver主备同步。<br>kafka：较为复杂，实质上是通过partition多follower的方式冗余。</p>
+<h4 id="高度负载均衡"><a href="#高度负载均衡" class="headerlink" title="高度负载均衡"></a>高度负载均衡</h4><p>发送负载均衡，消费负载均衡</p>
+<h4 id="消息消费实时性"><a href="#消息消费实时性" class="headerlink" title="消息消费实时性"></a>消息消费实时性</h4><p>rocketmq：长轮询<br>kafka：之前是短轮询，0.8版本之后支持长轮询<br>ps：为什么都是长轮询，而不是push？因为消息的消费速度不确定，采用长轮询的方式，可以让消费者控制消息的获取速度。如果用push，可能会出现消费者消费速度较慢mq就将新的消息推送过来的场景。</p>
+<p>但同时，由于架构不同，两个mq也是有比较大的区别,下面一一讲起：</p>
+<h3 id="kafka架构"><a href="#kafka架构" class="headerlink" title="kafka架构"></a>kafka架构</h3><p><img src="/images/mq/0.png" alt><br>zookeeper: 整个消息服务可用性的保障,存储消息服务中的所有topic以及partition的leader-follower的关系。<br>controller: kafka的partition存在leader-follower即主备的关系。初期是靠zk来选举，但后续发现随着partition数量的增加，导致zk的竞争非常激烈。不得已，kafka做了一个升级，加入了controller角色。 当服务启动时，zookeepr只需要竞选出一个broker作为controller,controller来指定partition的leader-follower关系,并将相应的信息存储到zk中。<br>broker: 普通的消息服务器，内部有多个partition，可能会升级为controller。</p>
+<p><img src="/images/mq/2.png" alt><br>在kafka中，一个topic会被拆分成多个partition实现负载均衡，这些parition就被controller分配到多个broker中（多对多关系），每一个broker中的parition，都对于一个日志文件（加入一个broker中有不同topic的5个paritition，则有5个partition文件），这个文件相互隔离，互不干扰。</p>
+<p><img src="/images/mq/3.png" alt><br>同时，每个partition会有多个replica，通过controller来指定leader-follower的关系。</p>
+<p>producer在发送消息时，根据策略指定partition或者随机或者其它策略选择partition发送。consumer根据数量是一对一消费还是一个consumer消费多个partition（同一topic）情况下。需要主要的是，一个partition同时只能被一个consumer消费，因此如果consumer的数量大于partition的数量，那么是会有consumer收不到消息。</p>
+<p>每个partition对应一个write offset和read offset，日志顺序写入，提高消息吞吐率。consumer顺序读消息，通过不同的策略移动read offset（比如获取消息就更新offset，或者commit消费成功之后再移动）,即使consumer挂掉，新的也会沿着上次的offset读取消息。</p>
+<h3 id="rocketmq架构"><a href="#rocketmq架构" class="headerlink" title="rocketmq架构"></a>rocketmq架构</h3><p>再看下rocketmq的基本架构图：</p>
+<p><img src="/images/mq/1.png" alt><br>介绍一个这几个角色<br>name server: rocketmq自己实现的一套服务发现和注册服务，每个nameserver的机器互相不会通信，但每个服务器都会和nameserver通信。<br>master-slaver：主备服务器，一个master可能对应多个slaver。producer和consumer都通过nameserver找到相应的master工作，当master挂掉之后，consumer只可以从slaver读消息，producer不能再向master写消息，但会通过负载找寻其它可以写入的master。 master和slaver的服务器是初始配置好的，不会由于宕机而动态切换。</p>
+<p><img src="/images/mq/4.png" alt><br>rocketmq的producer也是通过各种策略将消息分发到不同的服务器中，但与kafka不同的是，rocketmq的每个服务器上，都只有一个日志文件，叫做commitlog,多个topic的消息会同时写入到一个commitlog中。那么它是怎么做到区分不同消息的呢？这就需要一个新的模块：consume queue。</p>
+<p>发送消息时，会在消息中注明是哪个topic。写入日志时,broker中的所有topic顺序写入commitlog，但会基于配置分化出不同的consumer queue，每个queue对应一个read offset，剩下的就和kafka相同了。</p>
+<p>如果queue较多，这不还是随机读取了吗？rocketmq 使用pagecache技术，类似于计算机系统的swapcache来解决这个问题，多个queue对应多个cache区间，所以rocketmq的使用时要多占用一些内存的。</p>
+<h2 id="对比总结"><a href="#对比总结" class="headerlink" title="对比总结"></a>对比总结</h2><p>通过上面的论述就可以发现问题，理论上，kafka的吞吐量峰值会更高，因为在日志刷盘时，kafka是同时写入多个文件，假如服务器有多个硬盘，会有多套IO可以并发刷盘，而rocketmq只有单个。同时，kafka的极限可靠性也比rocketmq强，单说broker，不考虑负载的情况下，即使broker只剩下一台，kafka依然可以保障运行，但rocketmq的master全部挂掉之后producer就无法写入消息来，只能人工介入。</p>
+<p>但rocketmq同样有优势，第一就是架构简单，没有重型的zookeeper和选举策略，也没有controller这种控制角色，所有的信息更多的是基于配置的形式完成，虽然没有那么自动，但后期的维护和迭代升级也会更方便，未知的和不确定性的性能瓶颈会更少。<br>kafka是基于日志系统诞生的产品，关注的是高吞吐量，而rocketmq是阿里在电商和更多复杂业务中孕育的互联网化产品，提供更多的服务功能，比如事务消息、定时消息等等，而且基于它的架构，当topic数量较大时也不会产生什么问题，但kafka就会急剧的性能下降。因为kakfa的每个parition对应一个文件，topic越多，partition越多,每个broker要并发写入的文件也会更多，达到一定阈值，自然负载就下来了。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mq/" rel="tag"># mq</a>
+          
+            <a href="/tags/kafak/" rel="tag"># kafak</a>
+          
+            <a href="/tags/rocketmq/" rel="tag"># rocketmq</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/08/stm-cvs/" rel="next" title="STM vs CAS">
+                <i class="fa fa-chevron-left"></i> STM vs CAS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/12/druid/" rel="prev" title="Druid连接池源码分析">
+                Druid连接池源码分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="zhaohaifeng">
+            
+              <p class="site-author-name" itemprop="name">zhaohaifeng</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#高吞吐量"><span class="nav-number">1.</span> <span class="nav-text">高吞吐量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高可用"><span class="nav-number">2.</span> <span class="nav-text">高可用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高度负载均衡"><span class="nav-number">3.</span> <span class="nav-text">高度负载均衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息消费实时性"><span class="nav-number">4.</span> <span class="nav-text">消息消费实时性</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#kafka架构"><span class="nav-number"></span> <span class="nav-text">kafka架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rocketmq架构"><span class="nav-number"></span> <span class="nav-text">rocketmq架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比总结"><span class="nav-number"></span> <span class="nav-text">对比总结</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaohaifeng</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

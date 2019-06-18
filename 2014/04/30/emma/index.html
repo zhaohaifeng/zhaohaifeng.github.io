@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="layout: posttitle: “Emma使用与分析”date: 2014-04-30 10:00:00 tags: [emma, test, junit]什么是EmmaEMMA 是一个开源、面向 Java 程序测试覆盖率收集和报告工具。它通过对编译后的 Java 字节码文件进行插装，在测试执行过程中收集覆盖率信息，并通过支持多种报表格式对覆盖率结果进行展示。 EMMA 所使用的字节码插装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PAP">
+<meta property="og:url" content="http://yoursite.com/2014/04/30/emma/index.html">
+<meta property="og:site_name" content="PAP">
+<meta property="og:description" content="layout: posttitle: “Emma使用与分析”date: 2014-04-30 10:00:00 tags: [emma, test, junit]什么是EmmaEMMA 是一个开源、面向 Java 程序测试覆盖率收集和报告工具。它通过对编译后的 Java 字节码文件进行插装，在测试执行过程中收集覆盖率信息，并通过支持多种报表格式对覆盖率结果进行展示。 EMMA 所使用的字节码插装">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_1.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_2.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_3.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_4.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_5.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_6.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_11.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_7.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_8.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_9.png">
+<meta property="og:image" content="http://yoursite.com/images/emma/emma_10.png">
+<meta property="og:updated_time" content="2019-06-18T12:45:44.664Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PAP">
+<meta name="twitter:description" content="layout: posttitle: “Emma使用与分析”date: 2014-04-30 10:00:00 tags: [emma, test, junit]什么是EmmaEMMA 是一个开源、面向 Java 程序测试覆盖率收集和报告工具。它通过对编译后的 Java 字节码文件进行插装，在测试执行过程中收集覆盖率信息，并通过支持多种报表格式对覆盖率结果进行展示。 EMMA 所使用的字节码插装">
+<meta name="twitter:image" content="http://yoursite.com/images/emma/emma_1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2014/04/30/emma/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | PAP</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d390ccd966597ac9b2edaf325fe96e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAP</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/04/30/emma/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2014-04-30 00:00:00" itemprop="dateCreated datePublished" datetime="2014-04-30T00:00:00+08:00">2014-04-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>layout: post<br>title: “Emma使用与分析”<br>date: 2014-04-30 10:00:00</p>
+<h2 id="tags-emma-test-junit"><a href="#tags-emma-test-junit" class="headerlink" title="tags: [emma, test, junit]"></a>tags: [emma, test, junit]</h2><h1 id="什么是Emma"><a href="#什么是Emma" class="headerlink" title="什么是Emma"></a>什么是Emma</h1><p>EMMA 是一个开源、面向 Java 程序测试覆盖率收集和报告工具。它通过对编译后的 Java 字节码文件进行插装，在测试执行过程中收集覆盖率信息，并通过支持多种报表格式对覆盖率结果进行展示。 EMMA 所使用的字节码插装不仅保证 EMMA 不会给源代码带来“脏代码”，还确保 EMMA 摆脱了源代码的束缚，这一特点使 EMMA 应用于功能测试成为了可能。</p>
+<h1 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h1><p>emma现在可以通过命令行,ant,maven,Jenkins等方式使用,这里只介绍通过maven和Jenkins来集成emma测试。<br><a id="more"></a></p>
+<h2 id="在Maven中的使用"><a href="#在Maven中的使用" class="headerlink" title="在Maven中的使用"></a>在Maven中的使用</h2><p>直接运行maven emma:emma,即可。<br>      maven集成emma，需要两个插件，maven-surefire-plugin和emma-maven-plugin，如果之前没有安装，那么maven会自动下载这两个插件。<br>      emma依赖于surefire的配置，默认执行src/test/java的junit测试。为了方便使用，最好在自己的pom里配置maven-surefire-plugin插件。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-surefire-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.8.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">skipTests</span>&gt;</span>false<span class="tag">&lt;/<span class="name">skipTests</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">junitArtifactName</span>&gt;</span>junit:junit<span class="tag">&lt;/<span class="name">junitArtifactName</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">include</span>&gt;</span>**/*Test.java<span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">excludes</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">exclude</span>&gt;</span>**/*_Roo_*<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">excludes</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这样指定maven-surefire-plugin的版本为2.8.1，<skiptests>false</skiptests>不跳过测试，<include><strong>/*Test.java</strong></include>只测试以Test.java为文件名结尾的文件，而且不测试<exclude>/<em><em>Roo</em></em></exclude>文件名包含<em>Roo</em>的文件。更多的配置可以去查看maven-surefire-plugin的配置说明<a href="http://maven.apache.org/plugins/maven-surefire-plugin/。" target="_blank" rel="noopener">http://maven.apache.org/plugins/maven-surefire-plugin/。</a></p>
+<h2 id="在Jenkins中的使用"><a href="#在Jenkins中的使用" class="headerlink" title="在Jenkins中的使用"></a>在Jenkins中的使用</h2><p>在Jenkins系统管理的插件管理页面，添加Jenkins Emma plugin插件。<br>在项目配置中，加入emma:emma即可使用。</p>
+<p><img src="/images/emma/emma_1.png" alt="emma_1"></p>
+<p><img src="/images/emma/emma_2.png" alt="emma_2"><br>因为测试需要很长时间，而package命令会自动执行测试，所以有时候我们不想所有项目都测试。可以使用如下方案：系统配置两个分支，A分支用于开发，B分支用于上线。我们希望只要A分支进行emma测试，而在B分支不用测试方便快速上线。配置如下<br>在项目的pom.xml中，<skiptests>false</skiptests>默认不跳过测试，在B项目中配置clean -U compile package -Dmaven.test.skip=true，用来跳过测试。       </p>
+<h2 id="查看测试报告"><a href="#查看测试报告" class="headerlink" title="查看测试报告"></a>查看测试报告</h2><h3 id="本地测试查看："><a href="#本地测试查看：" class="headerlink" title="本地测试查看："></a>本地测试查看：</h3><p>生成的报告是以html存储，默认的位置是${项目目录}/target/site/emma,打开index.html可以查看。<br>里面有类覆盖率，方法覆盖率，块覆盖率，行覆盖率，<br><img src="/images/emma/emma_3.png" alt="emma_3"><br>选中其中的java文件还可以查看具体的代码覆盖率<br><img src="/images/emma/emma_4.png" alt="emma_4"><br>绿色为有测试的，红色的是测试未覆盖的。</p>
+<h3 id="Jenkins-测试查看："><a href="#Jenkins-测试查看：" class="headerlink" title="Jenkins 测试查看："></a>Jenkins 测试查看：</h3><p>在项目主页中查看<br><img src="/images/emma/emma_5.png" alt="emma_5"><br>这里会有项目的测试覆盖率曲线。x轴是版本变化，y轴是测试覆盖率。<br>点进图片进入本版本的详细测试报告。具体的形式和本地测试报告差不多，只是 jenkins测试报告没有具体的代码测试详情。</p>
+<h1 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h1><p>emma现在有两种工作方式，on-the-fly模式和offline模式：<br><img src="/images/emma/emma_6.png" alt="emma_6"><br>On the fly 模式往加载的类中加入字节码，在程序运行中，用 EMMA 实现的classLoader 替代应用默认的 Custom classLoader,动态加载类文件，并向类中加入一些统计测试的字节码，这样运行结束后，测试数据也就通过这些临时加入的字节码分析出来。<br>Offline 模式在类被加载前，在编译生成的class文件中加入字节码。<br>On the fly 模式比较方便，缺点也比较明显：<br><img src="/images/emma/emma_11.png" alt="emma_11"><br>它不能为被 boot class loader 加载的类生成覆盖率报告;而且，J2EE的classLoader和EMMA的classLoader都是同一类Custom classLoader，在j2ee项目启动过程中，必须选择应用容器(tomcat、Weblogic等等)相应的classLoader，从而无法使用emma的classLoader。同时，jenkins必须配合mvn的框架才能运行emma相关命令，而mvn框架只支持offline模式，所以如果想使用jenkins来做测试报告的话,就无法使用on the fly模式。在官方文档里也有说明：<br>As convenient as the on-the-fly mode is, in many cases it is not sufficient. For example, running a commercial J2EE container in a custom instrumenting classloader is practically impossible. Certain (bad) coding practices also fail for code executing in a custom classloader.<br>This on-the-fly instrumentation mode is handy for light-weight testing of main() test methods, individual classes, and small- to- mid-size programs. emmarun also works well with Swing applications.</p>
+<p>这时，我们只能求助于 Offline 模式。下面用maven的运行方式来介绍一下。</p>
+<p>通过在maven中执行，我们可以看出emma工作时主要运行以下几个步骤<br><img src="/images/emma/emma_7.png" alt="emma_7"></p>
+<ol>
+<li>字节码插装并生成插装的元信息文件coverage.em</li>
+<li>运行测试</li>
+<li>每次当 JVM 停止时，内存中记录的执行信息将被清除并被保存到 “coverage.ec” 的文件中。</li>
+<li>生成测试报告。<h2 id="插装字节码"><a href="#插装字节码" class="headerlink" title="插装字节码"></a>插装字节码</h2>emma执行是最重要的就是插装字节码：</li>
+</ol>
+<p><img src="/images/emma/emma_8.png" alt="emma_8"></p>
+<p>emma循环调用handleFile()方法来遍历目录下所有以’.class’结尾的文件，然后使用 classParser类得到要插装的组件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ClassDef <span class="title">class_table</span> <span class="params">()</span> <span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	m_table = <span class="keyword">new</span> ClassDef ();</span><br><span class="line">	magic ();</span><br><span class="line">	version ();</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">if</span> (DEBUG) System.out.println (s_line);</span><br><span class="line">	 </span><br><span class="line">	constant_pool ();</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">if</span> (DEBUG) System.out.println (s_line);</span><br><span class="line">	 </span><br><span class="line">	access_flags ();</span><br><span class="line">	this_class ();</span><br><span class="line">	super_class ();</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">if</span> (DEBUG) System.out.println (s_line);</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">//得到所有接口</span></span><br><span class="line">	interfaces ();</span><br><span class="line">	<span class="keyword">if</span> (DEBUG) System.out.println (s_line);</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">//得到所有字段</span></span><br><span class="line">	fields ();</span><br><span class="line">	<span class="keyword">if</span> (DEBUG) System.out.println (s_line);</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">//得到所有方法</span></span><br><span class="line">	methods ();</span><br><span class="line">	<span class="keyword">if</span> (DEBUG) System.out.println (s_line);</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">//得到所有attribute</span></span><br><span class="line">	attributes ();</span><br><span class="line">	<span class="keyword">if</span> (DEBUG) System.out.println (s_line);</span><br><span class="line">	 </span><br><span class="line">	<span class="keyword">return</span> m_tabl e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>offline模式的插装会生成全新的class文件，默认放在target/generated-classes下。以下是原java文件和插装后的class反编译的java文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmmaMain2</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line">	 </span><br><span class="line">	<span class="comment">//junit调用publicTest()进行测试</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">publicTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">		logger.info(<span class="string">"this is a public method"</span>);</span><br><span class="line">		logger.info(<span class="string">"我是分隔符------------------------------------------------------------------"</span>);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i =<span class="number">1</span> ;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">			privateTest();</span><br><span class="line">			<span class="keyword">if</span>(i==<span class="number">4</span>)&#123;</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(i==<span class="number">3</span>)&#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//永远不会执行到这一步，所以protectedTest()并没有被覆盖</span></span><br><span class="line">			<span class="keyword">if</span>(i==<span class="number">5</span>)&#123;</span><br><span class="line">				protectedTest();</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">protectedTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">		logger.info(<span class="string">"this is a protected method"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	 </span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">privateTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">		logger.info(<span class="string">"this is a private method"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>插装字节码之后反编译的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmmaMain2</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span>[][] $VRc;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6204774612524021426L</span>;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">EmmaMain2</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">	arrayOfBoolean[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">publicTest</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp3_0 = $VRc; <span class="keyword">if</span> (tmp3_0 == <span class="keyword">null</span>) tmp3_0; <span class="keyword">boolean</span>[] arrayOfBoolean = $VRi()[<span class="number">1</span>]; <span class="keyword">this</span>.logger.info(<span class="string">"this is a public method"</span>);</span><br><span class="line">	<span class="keyword">this</span>.logger.info(<span class="string">"我是分隔符------------------------------------------------------------------"</span>);</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">1</span>; arrayOfBoolean[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line">	tmpTernaryOp = tmp3_0;</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">	&#123;</span><br><span class="line">	  privateTest();</span><br><span class="line">	  arrayOfBoolean[<span class="number">1</span>] = <span class="keyword">true</span>; <span class="keyword">if</span> (i == <span class="number">4</span>) &#123; arrayOfBoolean[<span class="number">2</span>] = <span class="keyword">true</span>;</span><br><span class="line">	  &#125; <span class="keyword">else</span></span><br><span class="line">	  &#123;</span><br><span class="line">		arrayOfBoolean[<span class="number">3</span>] = <span class="keyword">true</span>; <span class="keyword">if</span> (i == <span class="number">3</span>) &#123; arrayOfBoolean[<span class="number">4</span>] = <span class="keyword">true</span>;</span><br><span class="line">		  <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		arrayOfBoolean[<span class="number">5</span>] = <span class="keyword">true</span>; <span class="keyword">if</span> (i == <span class="number">5</span>) &#123;</span><br><span class="line">		  protectedTest(); arrayOfBoolean[<span class="number">6</span>] = <span class="keyword">true</span>;</span><br><span class="line">		  <span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	  &#125;</span><br><span class="line">	  i++; arrayOfBoolean[<span class="number">7</span>] = <span class="keyword">true</span>; arrayOfBoolean[<span class="number">8</span>] = <span class="keyword">true</span>; &#125; <span class="keyword">while</span> (i &lt; <span class="number">10</span>);</span><br><span class="line">	arrayOfBoolean[<span class="number">9</span>] = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  ``` </span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">protectedTest</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp3_0 = $VRc; <span class="keyword">if</span> (tmp3_0 == <span class="keyword">null</span>) tmp3_0; <span class="keyword">boolean</span>[] arrayOfBoolean = $VRi()[<span class="number">2</span>]; <span class="keyword">this</span>.logger.info(<span class="string">"this is a protected method"</span>);</span><br><span class="line">	arrayOfBoolean[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">privateTest</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp3_0 = $VRc; <span class="keyword">if</span> (tmp3_0 == <span class="keyword">null</span>) tmp3_0; <span class="keyword">boolean</span>[] arrayOfBoolean = $VRi()[<span class="number">3</span>]; <span class="keyword">this</span>.logger.info(<span class="string">"this is a private method"</span>);</span><br><span class="line">	arrayOfBoolean[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">static</span></span><br><span class="line">  &#123;</span><br><span class="line">	<span class="keyword">boolean</span>[] arrayOfBoolean = $VRi()[<span class="number">4</span>];</span><br><span class="line">	arrayOfBoolean[<span class="number">0</span>] = <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span>[][] $VRi()</span><br><span class="line">  &#123;</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp9_6 = (EmmaMain2.$VRc = <span class="keyword">new</span> <span class="keyword">boolean</span>[<span class="number">5</span>]);</span><br><span class="line">	tmp9_6[<span class="number">0</span>] = <span class="keyword">new</span> <span class="keyword">boolean</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp15_9 = tmp9_6;</span><br><span class="line">	tmp15_9[<span class="number">1</span>] = <span class="keyword">new</span> <span class="keyword">boolean</span>[<span class="number">10</span>];</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp22_15 = tmp15_9;</span><br><span class="line">	tmp22_15[<span class="number">2</span>] = <span class="keyword">new</span> <span class="keyword">boolean</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp28_22 = tmp22_15;</span><br><span class="line">	tmp28_22[<span class="number">3</span>] = <span class="keyword">new</span> <span class="keyword">boolean</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp34_28 = tmp28_22;</span><br><span class="line">	tmp34_28[<span class="number">4</span>] = <span class="keyword">new</span> <span class="keyword">boolean</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">boolean</span>[][] tmp40_34 = tmp34_28;</span><br><span class="line">	<span class="comment">//将类信息加载到内存中。</span></span><br><span class="line">	RT.r(tmp40_34, <span class="string">"com/impulse/test/emma/EmmaMain2"</span>, -<span class="number">5598510326399570528L</span>);</span><br><span class="line">	<span class="keyword">return</span> tmp40_34;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反编译有些问题，但我们可以看出，emma在每个方法的入口和出口和转移指令之前如return、break、continue都加入了监测代码，并在最后把代码的执行情况通过RT.r()方法加载到内存的m_coverageMap中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">r</span> <span class="params">(<span class="keyword">final</span> <span class="keyword">boolean</span> [][] coverage, <span class="keyword">final</span> String classVMName, <span class="keyword">final</span> <span class="keyword">long</span> stamp)</span></span>&#123;</span><br><span class="line">   <span class="comment">// note that we use class names, not the actual Class objects, as the keys here. This</span></span><br><span class="line">   <span class="comment">// is not the best possible solution because it is not capable of supporting</span></span><br><span class="line">   <span class="comment">// multiply (re)loaded classes within the same app, but the rest of the toolkit</span></span><br><span class="line">   <span class="comment">// isn't designed to support this anyway. Furthermore, this does not interfere</span></span><br><span class="line">   <span class="comment">// with class unloading.</span></span><br><span class="line">   <span class="keyword">final</span> ICoverageData cdata = getCoverageData (); <span class="comment">// need to use accessor for JMM reasons</span></span><br><span class="line">   <span class="comment">// ['cdata' can be null if a previous call to dumpCoverageData() disabled data collection]</span></span><br><span class="line">	</span><br><span class="line">   <span class="keyword">if</span> (cdata != <span class="keyword">null</span>)</span><br><span class="line">   &#123;</span><br><span class="line">	   <span class="keyword">synchronized</span> (cdata.lock ())</span><br><span class="line">	   &#123;</span><br><span class="line">		   <span class="comment">// <span class="doctag">TODO:</span> could something useful be communicated back to the class</span></span><br><span class="line">		   <span class="comment">// by returning something here [e.g., unique class ID (solves the</span></span><br><span class="line">		   <span class="comment">// issues of class name collisions and class reloading) or RT.class</span></span><br><span class="line">		   <span class="comment">// (to prevent RT reloading)]</span></span><br><span class="line">			</span><br><span class="line">		   cdata.addClass (coverage, classVMName, stamp);</span><br><span class="line">	   &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addClass</span> <span class="params">(<span class="keyword">final</span> <span class="keyword">boolean</span> [][] coverage, <span class="keyword">final</span> String classVMName, <span class="keyword">final</span> <span class="keyword">long</span> stamp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   m_coverageMap.put (classVMName, <span class="keyword">new</span> DataHolder (coverage, stamp));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以当我们只测试publicTest()时，虽然publicTest()调用了protectedTest(),但由于我们通过条件语句的控制，使得protectedTest()永远不会被执行，因此在转移指令时加监控是必要的，我们可以在生成的报告中看出，</p>
+<p><img src="/images/emma/emma_9.png" alt="emma_9"></p>
+<p>emma能够检测出那些虽然调用但没有执行到的代码。</p>
+<h2 id="收集覆盖率信息"><a href="#收集覆盖率信息" class="headerlink" title="收集覆盖率信息"></a>收集覆盖率信息</h2><p>emma会检测jvm的运行情况，当通过命令行调用reset或者虚拟机停止（一般是测试完成时），emma会将测试的覆盖率信息通过 dumpCoverageData()方法导出成实体文件。默认为coverage-*.ec文件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dumpCoverageData</span> <span class="params">(<span class="keyword">final</span> ICoverageData cdata, <span class="keyword">final</span> <span class="keyword">boolean</span> useSnapshot,</span></span></span><br><span class="line"><span class="function"><span class="params">							 <span class="keyword">final</span> File outFile, <span class="keyword">final</span> <span class="keyword">boolean</span> merge)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">try</span></span><br><span class="line">   &#123;</span><br><span class="line">	   <span class="keyword">if</span> (cdata != <span class="keyword">null</span>)</span><br><span class="line">	   &#123;</span><br><span class="line">		   <span class="comment">// use method-scoped loggers everywhere in RT:</span></span><br><span class="line">		   <span class="keyword">final</span> Logger log = Logger.getLogger ();</span><br><span class="line">		   <span class="keyword">final</span> <span class="keyword">boolean</span> info = log.atINFO ();</span><br><span class="line">			</span><br><span class="line">		   <span class="keyword">final</span> <span class="keyword">long</span> start = info ? System.currentTimeMillis () : <span class="number">0</span>;</span><br><span class="line">		   &#123;</span><br><span class="line">			   <span class="keyword">final</span> ICoverageData cdataView = useSnapshot ? cdata.shallowCopy () : cdata;</span><br><span class="line">				</span><br><span class="line">			   <span class="keyword">synchronized</span> (Object.class) <span class="comment">// fake a JVM-global critical section when multilply loaded RT's write to the same file</span></span><br><span class="line">			   &#123;</span><br><span class="line">				   <span class="comment">//在这里生者覆盖率信息文件，cdataView是CoverageData型，有一个重要的成员变量就是上面说的m_coverageMap</span></span><br><span class="line">				   DataFactory.persist (cdataView, outFile, merge);</span><br><span class="line">			   &#125;</span><br><span class="line">		   &#125;</span><br><span class="line">		   <span class="keyword">if</span> (info)</span><br><span class="line">		   &#123;</span><br><span class="line">			   <span class="keyword">final</span> <span class="keyword">long</span> end = System.currentTimeMillis ();</span><br><span class="line">				</span><br><span class="line">			   log.info (<span class="string">"runtime coverage data "</span> + (merge ? <span class="string">"merged into"</span> : <span class="string">"written to"</span>) + <span class="string">" ["</span> + outFile.getAbsolutePath () + <span class="string">"] &#123;in "</span> + (end - start) + <span class="string">" ms&#125;"</span>);</span><br><span class="line">		   &#125;</span><br><span class="line">	   &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">catch</span> (Throwable t)</span><br><span class="line">   &#123;</span><br><span class="line">	   <span class="comment">// log</span></span><br><span class="line">	   t.printStackTrace ();</span><br><span class="line">		</span><br><span class="line">	   <span class="comment">// <span class="doctag">TODO:</span> do better chaining in JRE 1.4+</span></span><br><span class="line">	   <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException (IAppConstants.APP_NAME + <span class="string">" failed to dump coverage data: "</span> + t.toString ());</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+<p>DataFactory.persist (cdataView, outFile, merge); cdataView是CoverageData型，有一个重要的成员变量就是上面说的m_coverageMap，没错，就是在这里把存在内存中的测试覆盖率信息持久化到文件中。</p>
+<h2 id="生成测试报告"><a href="#生成测试报告" class="headerlink" title="生成测试报告"></a>生成测试报告</h2><p>AbstractReportGenerator是个抽象工厂，根据参数不同而产生不同的 ReportGenerator。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IReportGenerator <span class="title">create</span> <span class="params">(<span class="keyword">final</span> String type)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> ((type == <span class="keyword">null</span>) || (type.length () == <span class="number">0</span>))</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException (<span class="string">"null/empty input: type"</span>);</span><br><span class="line">		 </span><br><span class="line">		<span class="comment">// <span class="doctag">TODO:</span> proper pluggability pattern here</span></span><br><span class="line">		 </span><br><span class="line">		<span class="keyword">if</span> (<span class="string">"html"</span>.equals (type))</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> com.vladium.emma.report.html.ReportGenerator ();</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"txt"</span>.equals (type))</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> com.vladium.emma.report.txt.ReportGenerator ();</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"xml"</span>.equals (type))</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">new</span> com.vladium.emma.report.xml.ReportGenerator ();</span><br><span class="line">		<span class="keyword">else</span> <span class="comment">// <span class="doctag">TODO:</span> error code</span></span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> EMMARuntimeException (<span class="string">"no report generator class found for type ["</span> + type + <span class="string">"]"</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/emma/emma_10.png" alt="emma_10"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractItemVisitor</span> <span class="keyword">implements</span> <span class="title">IItemVisitor</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="comment">// public: ................................................................</span></span><br><span class="line">	<span class="comment">//概要覆盖信息</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">visit</span> <span class="params">(<span class="keyword">final</span> AllItem item, <span class="keyword">final</span> Object ctx)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ctx;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//包测试覆盖信息</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">visit</span> <span class="params">(<span class="keyword">final</span> PackageItem item, <span class="keyword">final</span> Object ctx)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ctx;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//源文件测试覆盖信息</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">visit</span> <span class="params">(<span class="keyword">final</span> SrcFileItem item, <span class="keyword">final</span> Object ctx)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ctx;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//在html中没有</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">visit</span> <span class="params">(<span class="keyword">final</span> ClassItem item, <span class="keyword">final</span> Object ctx)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ctx;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//在html没有</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">visit</span> <span class="params">(<span class="keyword">final</span> MethodItem item, <span class="keyword">final</span> Object ctx)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ctx;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>三种ReportGenerator都实现了IReportGenerator接口的process方法来到处报告，而process方法又分别调用了各种重载的visit()方法。当maven生成html测试报告是，只用了生成概要覆盖信息、源文件测试覆盖信息、包测试覆盖信息的方法。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://emma.sourceforge.net/" target="_blank" rel="noopener">emma官方网站</a></li>
+<li><a href="https://www.ibm.com/developerworks/cn/java/j-lo-emma/" target="_blank" rel="noopener">使用 EMMA 测量测试覆盖率</a></li>
+<li><a href="http://developer.51cto.com/art/200805/87018.htm" target="_blank" rel="noopener">可爱的EMMA：测试覆盖率工具</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/08/10/mop-deadlock/" rel="prev" title="项目遇到的一个gaplock死锁问题">
+                项目遇到的一个gaplock死锁问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="zhaohaifeng">
+            
+              <p class="site-author-name" itemprop="name">zhaohaifeng</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tags-emma-test-junit"><span class="nav-number">1.</span> <span class="nav-text">tags: [emma, test, junit]</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是Emma"><span class="nav-number"></span> <span class="nav-text">什么是Emma</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用"><span class="nav-number"></span> <span class="nav-text">如何使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在Maven中的使用"><span class="nav-number">1.</span> <span class="nav-text">在Maven中的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Jenkins中的使用"><span class="nav-number">2.</span> <span class="nav-text">在Jenkins中的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看测试报告"><span class="nav-number">3.</span> <span class="nav-text">查看测试报告</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地测试查看："><span class="nav-number">3.1.</span> <span class="nav-text">本地测试查看：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkins-测试查看："><span class="nav-number">3.2.</span> <span class="nav-text">Jenkins 测试查看：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作原理"><span class="nav-number"></span> <span class="nav-text">工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#插装字节码"><span class="nav-number">1.</span> <span class="nav-text">插装字节码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#收集覆盖率信息"><span class="nav-number">2.</span> <span class="nav-text">收集覆盖率信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成测试报告"><span class="nav-number">3.</span> <span class="nav-text">生成测试报告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaohaifeng</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

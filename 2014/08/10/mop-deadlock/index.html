@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前几天的中台项目遇到了一个诡异的死锁问题。所以就研究了一下。">
+<meta name="keywords" content="db,数据库,deadlock,gap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目遇到的一个gaplock死锁问题">
+<meta property="og:url" content="http://yoursite.com/2014/08/10/mop-deadlock/index.html">
+<meta property="og:site_name" content="PAP">
+<meta property="og:description" content="前几天的中台项目遇到了一个诡异的死锁问题。所以就研究了一下。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2014/08/10/mop-deadlock/!--￼4--%3E/D34C8BCA-CFCF-4D48-8E3D-B2B2769D0360.png">
+<meta property="og:updated_time" content="2019-06-18T12:45:44.666Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="项目遇到的一个gaplock死锁问题">
+<meta name="twitter:description" content="前几天的中台项目遇到了一个诡异的死锁问题。所以就研究了一下。">
+<meta name="twitter:image" content="http://yoursite.com/2014/08/10/mop-deadlock/!--￼4--%3E/D34C8BCA-CFCF-4D48-8E3D-B2B2769D0360.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2014/08/10/mop-deadlock/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>项目遇到的一个gaplock死锁问题 | PAP</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d390ccd966597ac9b2edaf325fe96e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAP</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/08/10/mop-deadlock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">项目遇到的一个gaplock死锁问题
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2014-08-10 00:00:00" itemprop="dateCreated datePublished" datetime="2014-08-10T00:00:00+08:00">2014-08-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>前几天的中台项目遇到了一个诡异的死锁问题。所以就研究了一下。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="死锁的场景"><a href="#死锁的场景" class="headerlink" title="死锁的场景"></a>死锁的场景</h2><p>先来看看出现死锁的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">executeClaim</span><span class="params">(Integer userId)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!canClaim(userId)) &#123;</span><br><span class="line">		<span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	Integer bizAccountId = dealTaskPoolMapper.findOneTaskBizAccountId();</span><br><span class="line">	<span class="keyword">if</span> (bizAccountId == <span class="keyword">null</span>) &#123;</span><br><span class="line">		LOGGER.info(<span class="string">"Task pool is empty"</span>);</span><br><span class="line">		Date now = <span class="keyword">new</span> Date();</span><br><span class="line">		Date beginEndTime = DateUtils.truncate(now, Calendar.DATE);</span><br><span class="line">		Date lastEndTime = DateUtils.addDays(DateUtils.truncate(now, Calendar.DATE),</span><br><span class="line">				Constants.BEFORE_DAYS_OFF_LINE_AS_TASK + <span class="number">1</span>);</span><br><span class="line">		bizAccountId = dealTaskMapper.findDealTaskBizAccountIdForClaimPool(beginEndTime, lastEndTime);</span><br><span class="line">		addTaskToPoolIfNotFull();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (bizAccountId == <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	...........</span><br><span class="line">		<span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>应用做了一个任务队列池，用户认领的时候，先检查一下任务池中有没有，如果有，去处，如果没有，则往任务池中批量添加20个任务，再查找，执行处理。</p>
+<p>为了防止在并发时，多个人认领同一个任务，所以是在数据库层用for update做了加锁处理。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;select id="findOneTaskBizAccountId" resultType="int"&gt;</span><br><span class="line"><span class="keyword">select</span> biz_account_id <span class="keyword">from</span> mt_task_claim_pool</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">asc</span></span><br><span class="line"><span class="keyword">limit</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">update</span></span><br><span class="line">&lt;/<span class="keyword">select</span>&gt;</span><br><span class="line">&lt;!<span class="comment">--这是往队列池中插入任务的sql--&gt;</span></span><br><span class="line">&lt;<span class="keyword">insert</span> <span class="keyword">id</span>=<span class="string">"insert"</span> &gt;</span><br><span class="line">	<span class="keyword">replace</span> <span class="keyword">into</span> mt_task_claim_pool (biz_account_id,created_time)</span><br><span class="line"><span class="keyword">values</span> (<span class="comment">#&#123;bizAccountId,&#125;, #&#123;createdTime&#125;)</span></span><br><span class="line">&lt;/<span class="keyword">insert</span>&gt;</span><br></pre></td></tr></table></figure></p>
+<p>然后系统就开始爆出死锁异常。频率非常低。<br>在这里实际上会出现两种死锁。先说第一种吧。</p>
+<h2 id="死锁的重现"><a href="#死锁的重现" class="headerlink" title="死锁的重现"></a>死锁的重现</h2><p>由于没有线上数据库相应的权限，所以我只能在线下猜测模拟。所幸要重现这个死锁并非难事：<br>如果任务池为空，并且同时有两个人认领时，就会死锁<br><img src="!--￼4--&gt;/D34C8BCA-CFCF-4D48-8E3D-B2B2769D0360.png" alt="pic_1"><br>查看死锁日志：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">2014-08-16 22:50:47 1301d4000</span><br><span class="line">*** (1) TRANSACTION:</span><br><span class="line">TRANSACTION 3857, ACTIVE 27 sec inserting</span><br><span class="line">mysql tables in <span class="keyword">use</span> <span class="number">1</span>, <span class="keyword">locked</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">LOCK</span> <span class="keyword">WAIT</span> <span class="number">3</span> <span class="keyword">lock</span> <span class="keyword">struct</span>(s), <span class="keyword">heap</span> <span class="keyword">size</span> <span class="number">376</span>, <span class="number">2</span> <span class="keyword">row</span> <span class="keyword">lock</span>(s)</span><br><span class="line">MySQL <span class="keyword">thread</span> <span class="keyword">id</span> <span class="number">234</span>, OS <span class="keyword">thread</span> handle <span class="number">0x130217000</span>, <span class="keyword">query</span> <span class="keyword">id</span> <span class="number">577</span> localhost root <span class="keyword">update</span></span><br><span class="line"><span class="keyword">replace</span> <span class="keyword">into</span> mt_task_claim_pool (biz_account_id,created_time) <span class="keyword">values</span> (<span class="number">1</span>,<span class="keyword">now</span>())</span><br><span class="line">*** (<span class="number">1</span>) WAITING <span class="keyword">FOR</span> THIS <span class="keyword">LOCK</span> <span class="keyword">TO</span> BE GRANTED:</span><br><span class="line"><span class="built_in">RECORD</span> LOCKS <span class="keyword">space</span> <span class="keyword">id</span> <span class="number">7</span> page <span class="keyword">no</span> <span class="number">3</span> n bits <span class="number">72</span> <span class="keyword">index</span> <span class="string">`PRIMARY`</span> <span class="keyword">of</span> <span class="keyword">table</span> <span class="string">`test`</span>.<span class="string">`mt_task_claim_pool`</span> trx <span class="keyword">id</span> <span class="number">3857</span> lock_mode X <span class="keyword">insert</span> intention waiting</span><br><span class="line"><span class="built_in">Record</span> <span class="keyword">lock</span>, <span class="keyword">heap</span> <span class="keyword">no</span> <span class="number">1</span> <span class="keyword">PHYSICAL</span> <span class="built_in">RECORD</span>: n_fields <span class="number">1</span>; compact format; info bits 0</span><br><span class="line"> 0: len 8; hex 73757072656d756d; asc supremum;;</span><br><span class="line">*** (2) TRANSACTION:</span><br><span class="line">TRANSACTION 3858, ACTIVE 25 sec inserting</span><br><span class="line">mysql tables in <span class="keyword">use</span> <span class="number">1</span>, <span class="keyword">locked</span> <span class="number">1</span></span><br><span class="line"><span class="number">3</span> <span class="keyword">lock</span> <span class="keyword">struct</span>(s), <span class="keyword">heap</span> <span class="keyword">size</span> <span class="number">376</span>, <span class="number">2</span> <span class="keyword">row</span> <span class="keyword">lock</span>(s)</span><br><span class="line">MySQL <span class="keyword">thread</span> <span class="keyword">id</span> <span class="number">237</span>, OS <span class="keyword">thread</span> handle <span class="number">0x1301d4000</span>, <span class="keyword">query</span> <span class="keyword">id</span> <span class="number">586</span> localhost root <span class="keyword">update</span></span><br><span class="line"><span class="keyword">replace</span> <span class="keyword">into</span> mt_task_claim_pool (biz_account_id,created_time) <span class="keyword">values</span> (<span class="number">2</span>,<span class="keyword">now</span>())</span><br><span class="line">*** (<span class="number">2</span>) HOLDS THE <span class="keyword">LOCK</span>(S):</span><br><span class="line"><span class="built_in">RECORD</span> LOCKS <span class="keyword">space</span> <span class="keyword">id</span> <span class="number">7</span> page <span class="keyword">no</span> <span class="number">3</span> n bits <span class="number">72</span> <span class="keyword">index</span> <span class="string">`PRIMARY`</span> <span class="keyword">of</span> <span class="keyword">table</span> <span class="string">`test`</span>.<span class="string">`mt_task_claim_pool`</span> trx <span class="keyword">id</span> <span class="number">3858</span> lock_mode X</span><br><span class="line"><span class="built_in">Record</span> <span class="keyword">lock</span>, <span class="keyword">heap</span> <span class="keyword">no</span> <span class="number">1</span> <span class="keyword">PHYSICAL</span> <span class="built_in">RECORD</span>: n_fields <span class="number">1</span>; compact format; info bits 0</span><br><span class="line"> 0: len 8; hex 73757072656d756d; asc supremum;;</span><br><span class="line">*** (2) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 7 page no 3 n bits 72 index `PRIMARY` of table `test`.`mt_task_claim_pool` trx id 3858 lock_mode X <span class="keyword">insert</span> intention waiting</span><br><span class="line"><span class="built_in">Record</span> <span class="keyword">lock</span>, <span class="keyword">heap</span> <span class="keyword">no</span> <span class="number">1</span> <span class="keyword">PHYSICAL</span> <span class="built_in">RECORD</span>: n_fields <span class="number">1</span>; compact format; info bits 0</span><br><span class="line"> 0: len 8; hex 73757072656d756d; asc supremum;;</span><br><span class="line">*** WE ROLL BACK TRANSACTION (2)</span><br></pre></td></tr></table></figure></p>
+<p>死锁日志有些杂乱无章，这里强烈推荐一下Percona的一个mysql工具：pt-deadlock-logger（其它的一些工具也超级好用，大家可以上它的官网关注一下<a href="http://www.percona.com/doc/percona-toolkit/2.2/），输出日志（不如死锁日志详细）：" target="_blank" rel="noopener">http://www.percona.com/doc/percona-toolkit/2.2/），输出日志（不如死锁日志详细）：</a></p>
+<p>localhost 2014-08-16T22:50:47 234 0 27 root localhost test mt_task_claim_pool PRIMARY RECORD X w 0 replace into mt_task_claim_pool (biz_account_id,created_time) values (1,now())</p>
+<p>localhost 2014-08-16T22:50:47 237 0 25 root localhost test mt_task_claim_pool PRIMARY RECORD X w 1 replace into mt_task_claim_pool (biz_account_id,created_time) values (2,now())</p>
+<p>通过这里我们可以看出，事务一二都持有一个Xlock，在等待一个插入意向锁。所以死锁。</p>
+<p>问题来了：既然select … for update是一个当前读，那么就是排他的，事务1操作之后，事务2应该无法执行这个sql了，为什么可以并发执行呢？</p>
+<p>既然事务2已经有xLock了，为什么还是无法获得一个插入意向锁呢？</p>
+<p>##死锁原因</p>
+<p>只有当该表mt_task_claim_pool没数据的时候，才会出现上述死锁。那么在执行select … for update时，实际上是无法锁定到具体行，无法加行锁，只能加gap锁。</p>
+<p>gap锁是不冲突的，所以这两个事务都加了gap锁，后续事务1插入数据，发现事务2加了gap锁，那么等待。事务2插入数据，发现事务1加了gap锁，等待。这就出现死锁了。</p>
+<p>如果是gap锁的话，lock type应该是gap，为什么显示是RECORD X（行锁）呢？</p>
+<p>这个问题我也思考了很久，后来偶然发现：</p>
+<p>在事务1执行插入操作后，等待，这是查看lock情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from information_schema.innodb_locks;</span><br><span class="line">+------------+-------------+-----------+-----------+-----------------------------+------------+------------+-----------+----------+------------------------+</span><br><span class="line">| lock_id    | lock_trx_id | lock_mode | lock_type | lock_table                  | lock_index | lock_space | lock_page | lock_rec | lock_data              |</span><br><span class="line">+------------+-------------+-----------+-----------+-----------------------------+------------+------------+-----------+----------+------------------------+</span><br><span class="line">| 4857:7:3:1 | 4857        | X         | RECORD    | `test`.`mt_task_claim_pool` | PRIMARY    |          7 |         3 |        1 | supremum pseudo-record |</span><br><span class="line">| 4858:7:3:1 | 4858        | X         | RECORD    | `test`.`mt_task_claim_pool` | PRIMARY    |          7 |         3 |        1 | supremum pseudo-record |</span><br><span class="line">+------------+-------------+-----------+-----------+-----------------------------+------------+------------+-----------+----------+------------------------+</span><br></pre></td></tr></table></figure></p>
+<p>lock_data是supremum pseudo-record，这是什么呢？查看mysql 的官方doc：<a href="http://dev.mysql.com/doc/refman/5.5/en/innodb-record-level-locks.html，其中有一句：" target="_blank" rel="noopener">http://dev.mysql.com/doc/refman/5.5/en/innodb-record-level-locks.html，其中有一句：</a></p>
+<blockquote>
+<p>For the last interval, the next-key lock locks the gap above the largest value in the index and the “supremum”pseudo-record having a value higher than any value actually in the index. The supremum is not a real index record, so, in effect, this next-key lock locks only the gap following the largest index value.</p>
+</blockquote>
+<p>可见supremum pseudo-record的X RECORD lock实际上就是gap lock的最大区间那块。当表里没有数据的时候，那么整个表的区间都是gap lock中最大区间了。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>解决方法很简单，只要让这个任务池永远不会空就可以了，但任务还剩1条（或者可以更多一点）的时候就往里面加任务。</p>
+<p>至于为什么明明是个gap lock，但是在死锁日志里却显示是RECORD呢？我现在还没有研究出来，难道是bug？还是开发者有什么更深层的想法，菜鸟完全无法揣摩高手的意图嘛！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/db/" rel="tag"># db</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+            <a href="/tags/deadlock/" rel="tag"># deadlock</a>
+          
+            <a href="/tags/gap/" rel="tag"># gap</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/04/30/emma/" rel="next" title>
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/08/15/innodb-lock/" rel="prev" title="Innodb中的事务隔离级别和锁的关系">
+                Innodb中的事务隔离级别和锁的关系 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="zhaohaifeng">
+            
+              <p class="site-author-name" itemprop="name">zhaohaifeng</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁的场景"><span class="nav-number">1.</span> <span class="nav-text">死锁的场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁的重现"><span class="nav-number">2.</span> <span class="nav-text">死锁的重现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">3.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaohaifeng</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

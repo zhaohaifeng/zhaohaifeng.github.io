@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="CAP说到分布式，首先要说的是CAP。CAP，指的是：  Consistency 一致性，所有节点之间数据是保持一致的。 Availability 可用性，向服务发起的请求可以立即得到非错的响应。 Partition tolerance 分区容错性，可以容忍由于分区导致的一些异常问题，比容网络延时、通讯异常、服务宕机等等。  CAP理论是由加州大学伯克利分校的计算机科学家埃里克·布鲁尔提出的猜想，">
+<meta name="keywords" content="分布式,paxos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式协议paxos讲解">
+<meta property="og:url" content="http://yoursite.com/2019/04/02/paxos/index.html">
+<meta property="og:site_name" content="PAP">
+<meta property="og:description" content="CAP说到分布式，首先要说的是CAP。CAP，指的是：  Consistency 一致性，所有节点之间数据是保持一致的。 Availability 可用性，向服务发起的请求可以立即得到非错的响应。 Partition tolerance 分区容错性，可以容忍由于分区导致的一些异常问题，比容网络延时、通讯异常、服务宕机等等。  CAP理论是由加州大学伯克利分校的计算机科学家埃里克·布鲁尔提出的猜想，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-06-18T12:45:44.671Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式协议paxos讲解">
+<meta name="twitter:description" content="CAP说到分布式，首先要说的是CAP。CAP，指的是：  Consistency 一致性，所有节点之间数据是保持一致的。 Availability 可用性，向服务发起的请求可以立即得到非错的响应。 Partition tolerance 分区容错性，可以容忍由于分区导致的一些异常问题，比容网络延时、通讯异常、服务宕机等等。  CAP理论是由加州大学伯克利分校的计算机科学家埃里克·布鲁尔提出的猜想，">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/04/02/paxos/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>分布式协议paxos讲解 | PAP</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d390ccd966597ac9b2edaf325fe96e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAP</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/02/paxos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式协议paxos讲解
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-02 22:38:22" itemprop="dateCreated datePublished" datetime="2019-04-02T22:38:22+08:00">2019-04-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h2><p>说到分布式，首先要说的是CAP。<br>CAP，指的是：</p>
+<ul>
+<li><strong>C</strong>onsistency 一致性，所有节点之间数据是保持一致的。</li>
+<li><strong>A</strong>vailability 可用性，向服务发起的请求可以立即得到非错的响应。</li>
+<li><strong>P</strong>artition tolerance 分区容错性，可以容忍由于分区导致的一些异常问题，比容网络延时、通讯异常、服务宕机等等。</li>
+</ul>
+<p>CAP理论是由加州大学伯克利分校的计算机科学家<strong>埃里克·布鲁尔</strong>提出的猜想，时在一个分布式系统中，这三者无法同时满足。后续这个理论得到了证明从而成为一个定理。</p>
+<h3 id="CAP不可兼容"><a href="#CAP不可兼容" class="headerlink" title="CAP不可兼容"></a>CAP不可兼容</h3><p>对于大多数系统，<strong>P</strong>分区容错性时最重要的性质（不然还讲分布式做什么:)）因此这套体系关键点在于C一致性和A可用性的矛盾。即在一个拥有大量节点的服务中，如果要保证高可用性，就要有一定的容灾能力，设计上数据存储在多个服务器当中。但在多节点的数据的传输随时可能由于节点宕机、网络延迟等等问题导致数据不可达，那么节点在响应数据请求时，响应结果可能会出现不一致的情况。  如果要保持一致，只能降低可用性（比如在数据不一致时服务不可用等等）。</p>
+<p>现在流行的分布式协议，其实都是在CAP中，尤其是CA中找寻一个适当的平衡点，从而有了Base理论：既然无法做到高可用强一致性，那么就选择<strong>基本可用最终一致性</strong>。</p>
+<ul>
+<li><strong>BA</strong> Basically Available 基本可用性；</li>
+<li><strong>S</strong>oft 软状态；</li>
+<li><strong>E</strong>ventual Consistency 最终一致性。</li>
+</ul>
+<h3 id="AP和CP并非绝对"><a href="#AP和CP并非绝对" class="headerlink" title="AP和CP并非绝对"></a>AP和CP并非绝对</h3><p>同时在笔者看来，CAP虽是一个定理，但每个分布式协议或者分布式实现，并不是非黑即白的。不是说一个协议，要么说CP，可用性不强，要么是AP，一致性不强。 而是会找寻一些平衡，按照自身的理念去提供最好的服务。</p>
+<p>比如，zookeeper是哪种呢？网上大部分会说，zk是CP的， 但笔者看来却并不是。<br>之所以说zk是cp，是因为zk的writer是全部转发到leader来处理，并在大多数follower认可之后写入成功。因此只要写入了数据就一定是有效且不会丢失的。 但当leader服务宕机之后，需要重新选举leader，才可以继续提供服务，因此zk并不是高可用的。</p>
+<p>但在read时，zk为了提高吞吐率，client只要读取follower的数据就ok，那么zk就并非一个强一致的应用。虽然可以通过follower的sync（实时获取leader的最新数据）来处理成<strong>读强一致性</strong>，但可用性就牺牲太大了。 </p>
+<p>同时，zk还提供了一种readonly状态机制，即使在zk 进行leader选举时，也可以提供只读服务。那么在一个read远远多于write的场景，zk甚至可以说是满足AP的，read弱一致性，但高可用。</p>
+<p>这个世界上没有银弹，对于分布式尤其如此。 固然可能随着技术的更新换代，有些协议或者技术不符合当前场景，但大部分其实是没有优劣之分，只是各有取舍，根据业务的实际场景选择合适的技术方式方案，才是我们开发者所真正需要掌握的技能。</p>
+<h2 id="Paxos"><a href="#Paxos" class="headerlink" title="Paxos"></a>Paxos</h2><p>paxos是1990年由莱斯利·兰伯特（英语：Leslie Lamport，LaTeX中的「La」）于1990年提出的一种基于消息传递且具有高度容错特性的一致性算法。</p>
+<h3 id="Basic-Paxos"><a href="#Basic-Paxos" class="headerlink" title="Basic Paxos"></a>Basic Paxos</h3><p>basic paxos是paxos的最初版本，也是最基础的分布式协议。<br>在协议中，会有几个角色：</p>
+<ul>
+<li>proposer 提案者。</li>
+<li>acceptor 提案处理者，针对提案进行判断，通过则提案成为决议。</li>
+<li>learner 获取所有被批准的提案（决议），用于返回给请求方。</li>
+</ul>
+<p>paxos决议的过程如下（摘自<a href="https://zh.wikipedia.org/wiki/Paxos%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">维基百科</a>）：</p>
+<ol>
+<li>准备（prepare）阶段：<ol>
+<li>proposer选择一个提案编号n并将prepare请求发送给acceptors中的一个多数派；</li>
+<li>acceptor收到prepare消息后，如果提案的编号大于它已经回复的所有prepare消息(回复消息表示接受accept)，则acceptor将自己上次接受的提案回复给proposer，并承诺不再回复小于n的提案；</li>
+</ol>
+</li>
+<li>批准（accept）阶段：<ol>
+<li>当一个proposer收到了多数acceptors对prepare的回复后，就进入批准阶段。它要向回复prepare请求的acceptors发送accept请求，包括编号n和根据P2c决定的value（如果根据P2c没有已经接受的value，那么它可以自由决定value）。</li>
+<li>在不违背自己向其他proposer的承诺的前提下，acceptor收到accept请求后即批准这个请求。</li>
+</ol>
+</li>
+</ol>
+<p>流程图如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">假设之前的最新提案号是N-1</span><br><span class="line">Client   Proposer      Acceptor     Learner</span><br><span class="line">   |         |          |  |  |       |  | </span><br><span class="line">   X--------&gt;|          |  |  |       |  |  Request 提交数据变更V</span><br><span class="line">   |         X---------&gt;|-&gt;|-&gt;|       |  |  Prepare(N) prepare1.1 proposer进行提案。新的提案号为N</span><br><span class="line">   |         |&lt;---------X--X--X       |  |  Promise(N,&#123;Va,Vb,Vc&#125;) prepare1.2 三台Acceptor发现都是最新的版本，因此做出承诺（不再											   回复小于N的提案）</span><br><span class="line">   |         X---------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,V) accept1.1 proposer发现多数acceptors回复通过，则提交批准请求</span><br><span class="line">   |         |&lt;---------X--X--X------&gt;|-&gt;|  Accepted(N,V) acceptor批准请求，并同步到learners</span><br><span class="line">   |&lt;---------------------------------X--X  Response learners处理准备的决议（V），并返回给客户端,该流程有6步。</span><br><span class="line">   |         |          |  |  |       |  |</span><br></pre></td></tr></table></figure></p>
+<p>流程通过时比较顺利，但在并发环境下，可能会出现资源浪费和活锁：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">假设当前最新提案号都是N-1</span><br><span class="line">Client   Proposer      Acceptor     Learner</span><br><span class="line"> | |       | |          |  |  |       |  | </span><br><span class="line"> X -------&gt;| |          |  |  |       |  |  Request(V) Client1 提交数据变更V</span><br><span class="line"> | X--------&gt;|          |  |  |       |  |  Request(W) Client2 提交数据变更W</span><br><span class="line"> | |	   X-----------&gt;|-&gt;|-&gt;|       |  |  Prepare(N,V) proposer1进行提案，新的提案号是N </span><br><span class="line"> | |       |&lt;-----------X--X--X       |  |  Promise(N,V) prepare1.2 三台Acceptor发现都是最新的版本，因此做出承诺（不再回复小于N的提案）</span><br><span class="line"> | |       | X---------&gt;|-&gt;|-&gt;|       |  |  Prepare(N,W) proposer2进行提案，此时并不知道p1的提案，因此提案号也是N。</span><br><span class="line"> | |       | |&lt;---------X--X--X       |  |  Reject(N,W) 根据prepare1.2的协议，acceptors已经回复了proposer1编号为N的提案，针对proposer2,直接否决，并返回最新的提案号为N。</span><br><span class="line"> | |       | X---------&gt;|-&gt;|-&gt;|       |  |  Prepare(N+1,W) proposer2发现最新的提案号是N，自己保留的已经失效，因此更新提案号(N+1)重新提案。</span><br><span class="line"> | |       | |&lt;---------X--X--X       |  |  Promise(N+1,W) Acceptor判断新的提案编号较新，因此做出承诺（不再回复小于N+1的提案）</span><br><span class="line"> | |       X-----------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,V) 此时proposer1对于proposer2的提交号全局编号的变化并不知情，只知道自身之前提交的prepare已经被acceptors promise了，因此发起批准请求。</span><br><span class="line"> | |       |&lt;-----------|&lt;-|&lt;-|       |  |  Reject(N,V) accept1.2 根据协议，由于acceptors批准p1的请求会违背对于proposer2的承诺，因此拒绝，并返回最能的编号N+1</span><br><span class="line"> | |       X-----------&gt;|-&gt;|-&gt;|       |  |  Prepare(N+2,V) proposer1发现最新的提案号时N+1，自己的已经实效，因此更新提案号(N+2)重新提案。</span><br><span class="line"> .......................</span><br></pre></td></tr></table></figure></p>
+<p>以此类推，proposer1和proposer2的循环由于prepare阶段和accept阶段的交替进行可能无限下去。之所以是活锁是因为如果某个proposer在prepare之后马上accept，则可以解开这个循环。 不过随着节点和并发请求的增多，即使不会出现活锁，也会有大量的资源消耗。</p>
+<h3 id="Multi-Paxos"><a href="#Multi-Paxos" class="headerlink" title="Multi-Paxos"></a>Multi-Paxos</h3><p>Basic-Paxos之所以出现活锁和计算浪费，是由于basic-paxos有两个阶段，多个proposer会提交多个提案，这些版本在不同阶段中会出现时序上的冲突。</p>
+<p>Multi-Paxos为了解决这个问题，设定了一个leader角色。所有的提案，都由leader来发起。同时，由于只有一个proposer（就是leader）来进行提案，避免了编号紊乱的问题，因此可以跳过prepare阶段，直接进行accept:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Client     Leader       Acceptor     Learner</span><br><span class="line"> X----------&gt;|          |  |  |       |  |  Request(V) </span><br><span class="line"> | X--------&gt;|          |  |  |       |  |  Request(W)</span><br><span class="line"> | |         X---------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,I+1,V)  进行提案，新的轮次是N，编号I+1</span><br><span class="line"> | |         |&lt;---------X--X--X------&gt;|-&gt;|  Accepted(N,I+1,V) 有两个请求到达leader，但leader先处理第一个</span><br><span class="line"> |&lt;-----------------------------------X--X  Response(V)  client1 的请求处理完成，之后在提案第二个。</span><br><span class="line"> | |         X---------&gt;|-&gt;|-&gt;|       |  |  Accept!(N,I+2,W) </span><br><span class="line"> | |         |&lt;---------X--X--X------&gt;|-&gt;|  Accepted(N,I+2,W)</span><br><span class="line"> | |&lt;---------------------------------X--X  Response(W) 该流程有4步（注意，这里有两个提交,每个提交时4步）</span><br><span class="line"> | |         |          |  |  |       |  |</span><br><span class="line">通过leader对时序的管理，省略了prepare步骤，减少了2步消息的传输，并且不会出现活锁。</span><br></pre></td></tr></table></figure></p>
+<p>其中，leader的产生是由选举算法产生（下文讲述）。每一轮选举，N递增。 在此维度上增加I，（在某轮选举中递增的编号）。</p>
+<h3 id="Fast-Paxos"><a href="#Fast-Paxos" class="headerlink" title="Fast-Paxos"></a>Fast-Paxos</h3><p>在并发提交时，会产生大量的冲突，因此Multi-Paxos增加了独一无二的leader角色负责提案。而Fast-Paxos的设计是，客户端直接提交请求导acceptors，减少一步leader的转发；只有当出现消息冲突时，再由leader来负责协调。 这种方式，非常适合并发冲突不严重时处理。<br>fast-paxos有两个分支，一个有leader的协调者机制，一个是无leader角色的自动协调机制。<br>我们先看有leader的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Client  Leader      Acceptor      Learner</span><br><span class="line">   |      |        |  |  |  |      |  |</span><br><span class="line">   |      |        |  |  |  |      |  |</span><br><span class="line">   X--------------&gt;|-&gt;|-&gt;|-&gt;|      |  |  Accept!(N,I,W)  直接提案</span><br><span class="line">   |      |&lt;-------X--X--X--X-----&gt;|-&gt;|  Accepted(N,I,W) 提案确认，成为决议</span><br><span class="line">   |&lt;------------------------------X--X  Response(W)  可以看到，在没有冲突时，该流程有3步,会比multi-paxos减少一步流程。</span><br><span class="line">   |      |        |  |  |  |      |  |</span><br><span class="line"> | X--------------?|-?|-?|-?|      |  |  Accept!(N,I,V)  client1 提案V</span><br><span class="line"> X----------------?|-?|-?|-?|      |  |  Accept!(N,I,W)  client2 提案w</span><br><span class="line"> | |      |        |  |  |  |      |  |</span><br><span class="line"> | |      |        |  |  |  |      |  |  !! Acceptors disagree on value</span><br><span class="line"> | |      |&lt;-------X--X-&gt;|-&gt;|-----&gt;|-&gt;|  Accepted(N,I,V) client1 的提案V被前两个acceptors批准，并通知leader和learner</span><br><span class="line"> | |      |&lt;-------|&lt;-|&lt;-X--X-----&gt;|-&gt;|  Accepted(N,I,W) client2 的提案W被后两个acceptors批准，并通知leader和learner</span><br><span class="line"> | |      |        |  |  |  |      |  |  由于acceptors的意见不一致，并且没有一个获得多数派，因此learner不会做处理。</span><br><span class="line"> | |      |        |  |  |  |      |  |  !! Detect collision &amp; recover</span><br><span class="line"> | |      X-------&gt;|-&gt;|-&gt;|-&gt;|      |  |  Accept!(N+1,I,W) leader发现无法没有一个决议形成多数派，那么根据协调算法，指定W作为提案，重新提交。N+1，用来标识更高的优先级。</span><br><span class="line"> | |      |&lt;-------X--X--X--X-----&gt;|-&gt;|  Accepted(N+1,I,W)  acceptors获取到leader的提案，并且编号时N+1（这时client无论再如何重复提交，也无法影响这个决议，因为cleint的提案只能是（N,I+X,X）），N的优先级更高，I增加到多少都无用。</span><br><span class="line"> |&lt;--------------------------------X--X  Response(W)  learner 发现多数派决议，并返回客户端。 这里可以看到，出现冲突时，流程的复杂度时比multi更高。</span><br></pre></td></tr></table></figure></p>
+<p>上述的fast和multi,都有一个leader角色。但leader从哪里来呢，当leader宕机时该怎么产生新的leader呢？这就是分布式中比较有名的选举算法，而fast-paxos的另一个分支—<strong>无leader角色的自动协调机制</strong>就是为了解决这个问题。 zk的zab协议，以及etcd的raft协议，都是默认采用fast-paxos的这个分支为基础进行leader选举的。</p>
+<p>无leader的自动协调，其实就是协调一种固有的机制，那zk为例子，当出现冲突时：</p>
+<ul>
+<li>优先选择事务zxid更大的。 zxid是一个64位的数据，前32位是epoch（选举轮次），后32位是事务Id。服务重启时，各个server的zxid相同，只有服务正在运行中leader宕机时，zxid才会不同。通过这个机制，会选择zxid更大的服务器作为leader（zxid最大，数据也最新）</li>
+<li>如果zxid相同，优先选择serverId更大的。 serverId是服务器的唯一id，可以区分大小。</li>
+</ul>
+<p>通过这种机制，没有leader，也可以合并client和learner:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Client         Servers</span><br><span class="line"> |  |         |  |  |  |</span><br><span class="line"> |  |         |  |  |  |  !! Concurrent conflicting proposals</span><br><span class="line"> |  |         |  |  |  |  !!   received in different order</span><br><span class="line"> |  |         |  |  |  |  !!   by the Servers</span><br><span class="line"> |  X--------?|-?|-?|-?|  Accept!(N,I,V) client2 提案V</span><br><span class="line"> X-----------?|-?|-?|-?|  Accept!(N,I,W) client1 提案W</span><br><span class="line"> |  |         |  |  |  |</span><br><span class="line"> |  |         |  |  |  |  !! Servers disagree on value</span><br><span class="line"> |  |         X&lt;&gt;X-&gt;|-&gt;|  Accepted(N,I,V) 前两台servers批准了V，并向其它servers发送提案。</span><br><span class="line"> |  |         |&lt;-|&lt;-X&lt;&gt;X  Accepted(N,I,W) 后两台servers批准了W，并想其它servers发送提案。</span><br><span class="line"> |  |         |  |  |  |</span><br><span class="line"> |  |         |  |  |  |  !! Detect collision &amp; recover</span><br><span class="line"> |  |         X&lt;&gt;X&lt;&gt;X&lt;&gt;X  Accepted(N+1,I,W)  servers都收到到其它servers的提案，由于没有形成大多数，因此进行自动协调，由于N和I相同，因此假设根据后两台servers的机器编号更大，修正提案，批准后两台机器的提案W。</span><br><span class="line"> |&lt;-----------X--X--X--X  Response(W)  W提案形成大多数，形成决议，回复W。</span><br><span class="line"> |  |         |  |  |  |</span><br></pre></td></tr></table></figure></p>
+<p>这里只是一个大体的流程，实际上<code>X&lt;&gt;X&lt;&gt;X&lt;&gt;X  Accepted(N+1,I,W)</code> 这一步远比流程中复杂的多，如果有机会再进行说明吧。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+          
+            <a href="/tags/paxos/" rel="tag"># paxos</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/10/“互联网医院”和“医院-互联网”/" rel="next" title="“互联网医院”和“医院 互联网+”">
+                <i class="fa fa-chevron-left"></i> “互联网医院”和“医院 互联网+”
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="zhaohaifeng">
+            
+              <p class="site-author-name" itemprop="name">zhaohaifeng</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAP"><span class="nav-number">1.</span> <span class="nav-text">CAP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP不可兼容"><span class="nav-number">1.1.</span> <span class="nav-text">CAP不可兼容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AP和CP并非绝对"><span class="nav-number">1.2.</span> <span class="nav-text">AP和CP并非绝对</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paxos"><span class="nav-number">2.</span> <span class="nav-text">Paxos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic-Paxos"><span class="nav-number">2.1.</span> <span class="nav-text">Basic Paxos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Paxos"><span class="nav-number">2.2.</span> <span class="nav-text">Multi-Paxos</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fast-Paxos"><span class="nav-number">2.3.</span> <span class="nav-text">Fast-Paxos</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaohaifeng</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

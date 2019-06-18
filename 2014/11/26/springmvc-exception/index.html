@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="一直在使用springmvc来当做后台应用的controller。最近发现一个问题，就是客户端做了一次数据处理，报了500异常，但是再服务端却没有任何异常输出。尽管我做了自定义异常处理：">
+<meta name="keywords" content="spring,web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springmvc 自定义异常处理 无法解析spring内部异常的分析">
+<meta property="og:url" content="http://yoursite.com/2014/11/26/springmvc-exception/index.html">
+<meta property="og:site_name" content="PAP">
+<meta property="og:description" content="一直在使用springmvc来当做后台应用的controller。最近发现一个问题，就是客户端做了一次数据处理，报了500异常，但是再服务端却没有任何异常输出。尽管我做了自定义异常处理：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2014/11/26/springmvc-exception/!--￼6--%3E/springmvc-exception1.png">
+<meta property="og:image" content="http://yoursite.com/2014/11/26/springmvc-exception/!--￼7--%3E/springmvc-exception2.png">
+<meta property="og:updated_time" content="2019-06-18T12:45:44.667Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="springmvc 自定义异常处理 无法解析spring内部异常的分析">
+<meta name="twitter:description" content="一直在使用springmvc来当做后台应用的controller。最近发现一个问题，就是客户端做了一次数据处理，报了500异常，但是再服务端却没有任何异常输出。尽管我做了自定义异常处理：">
+<meta name="twitter:image" content="http://yoursite.com/2014/11/26/springmvc-exception/!--￼6--%3E/springmvc-exception1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2014/11/26/springmvc-exception/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>springmvc 自定义异常处理 无法解析spring内部异常的分析 | PAP</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0d390ccd966597ac9b2edaf325fe96e4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PAP</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/11/26/springmvc-exception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zhaohaifeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PAP">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">springmvc 自定义异常处理 无法解析spring内部异常的分析
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2014-11-26 00:00:00" itemprop="dateCreated datePublished" datetime="2014-11-26T00:00:00+08:00">2014-11-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-18 20:45:44" itemprop="dateModified" datetime="2019-06-18T20:45:44+08:00">2019-06-18</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/web/" itemprop="url" rel="index"><span itemprop="name">web</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一直在使用springmvc来当做后台应用的controller。最近发现一个问题，就是客户端做了一次数据处理，报了500异常，但是再服务端却没有任何异常输出。尽管我做了自定义异常处理：</p>
+<a id="more"></a>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"exceptionResolver"</span> <span class="attr">class</span>=<span class="string">"com.ruoshui.bethune.web.handler.BethuneMappingExceptionResolver"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"defaultErrorView"</span> <span class="attr">value</span>=<span class="string">"error/uncaughtException"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"exceptionMappings"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">props</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">".DataNotFoundException"</span>&gt;</span>error/dataNotFound<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">props</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 覆盖doResolveException方法，记录错误日志</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> ModelAndView <span class="title">doResolveException</span><span class="params">(HttpServletRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">										  HttpServletResponse response, Object handler, Exception ex)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	logger.error(ex.getMessage(), ex);</span><br><span class="line">	.....balabala.......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这让我很困惑，查了半天，发现是spring mvc异常处理的一个漏洞。</p>
+<h2 id="spring-mvc-异常处理机制"><a href="#spring-mvc-异常处理机制" class="headerlink" title="spring mvc 异常处理机制"></a>spring mvc 异常处理机制</h2><p>在springmvc的主servlet:DispatcherServlet中定义里异常处理机制：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Determine an error ModelAndView via the registered HandlerExceptionResolvers.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> request current HTTP request</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> response current HTTP response</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> handler the executed handler, or &#123;<span class="doctag">@code</span> null&#125; if none chosen at the time of the exception</span></span><br><span class="line"><span class="comment"> * (for example, if multipart resolution failed)</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> ex the exception that got thrown during handler execution</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> a corresponding ModelAndView to forward to</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception if no error ModelAndView found</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> ModelAndView <span class="title">processHandlerException</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">		Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check registered HandlerExceptionResolvers...</span></span><br><span class="line">	ModelAndView exMv = <span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">for</span> (HandlerExceptionResolver handlerExceptionResolver : <span class="keyword">this</span>.handlerExceptionResolvers) &#123;</span><br><span class="line">		exMv = handlerExceptionResolver.resolveException(request, response, handler, ex);</span><br><span class="line">		<span class="keyword">if</span> (exMv != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (exMv != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (exMv.isEmpty()) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// We might still need view name translation for a plain error model...</span></span><br><span class="line">		<span class="keyword">if</span> (!exMv.hasView()) &#123;</span><br><span class="line">			exMv.setViewName(getDefaultViewName(request));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Handler execution resulted in exception - forwarding to resolved error view: "</span> + exMv, ex);</span><br><span class="line">		&#125;</span><br><span class="line">		WebUtils.exposeErrorRequestAttributes(request, ex, getServletName());</span><br><span class="line">		<span class="keyword">return</span> exMv;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">throw</span> ex;</span><br><span class="line">&#125;</span><br><span class="line">``` </span><br><span class="line">spring 会维护一个handlerExceptionResolvers列表，这其中包括我们的自定义exceptionHandler,也包括默认的DefaultHandlerExceptionResolver等等，处理异常时遍历列表中的所有handler，找到一个可以处理异常的handler：我们可以看下excpetionHandler的公共父类AbstractHandlerExceptionResolver</span><br><span class="line"></span><br><span class="line">``` java</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Checks whether this resolver is supposed to apply (i.e. the handler matches</span></span><br><span class="line"><span class="comment"> * in case of "mappedHandlers" having been specified), then delegates to the</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> #doResolveException&#125; template method.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ModelAndView <span class="title">resolveException</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">		Object handler, Exception ex)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (shouldApplyTo(request, handler)) &#123;</span><br><span class="line">		<span class="comment">// Log exception, both at debug log level and at warn level, if desired.</span></span><br><span class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Resolving exception from handler ["</span> + handler + <span class="string">"]: "</span> + ex);</span><br><span class="line">		&#125;</span><br><span class="line">		logException(ex, request);</span><br><span class="line">		prepareResponse(ex, response);</span><br><span class="line">		<span class="keyword">return</span> doResolveException(request, response, handler, ex);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会调用shouldApplyTo来查看这个handler是否可以处理这个异常。<br>在这个handlerExceptionResolvers列中，我们的自定义异常是放在最后面的：</p>
+<p><img src="!--￼6--&gt;/springmvc-exception1.png" alt="1"></p>
+<p>##有些异常被springmvc内部处理，不会再向外暴露</p>
+<p>当有spring异常的时候，会优先由spring内部的异常处理handler来筛选（挑剩的才给我们。。。。）,而在DefaultHandlerExceptionResolver中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> ModelAndView <span class="title">doResolveException</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">		Object handler, Exception ex)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (ex <span class="keyword">instanceof</span> NoSuchRequestHandlingMethodException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleNoSuchRequestHandlingMethod((NoSuchRequestHandlingMethodException) ex, request, response,</span><br><span class="line">					handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> HttpRequestMethodNotSupportedException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleHttpRequestMethodNotSupported((HttpRequestMethodNotSupportedException) ex, request,</span><br><span class="line">					response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//......balabala..........</span></span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> TypeMismatchException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleTypeMismatch((TypeMismatchException) ex, request, response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> HttpMessageNotReadableException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleHttpMessageNotReadable((HttpMessageNotReadableException) ex, request, response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> HttpMessageNotWritableException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleHttpMessageNotWritable((HttpMessageNotWritableException) ex, request, response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> MethodArgumentNotValidException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleMethodArgumentNotValidException((MethodArgumentNotValidException) ex, request, response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> MissingServletRequestPartException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleMissingServletRequestPartException((MissingServletRequestPartException) ex, request, response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> BindException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleBindException((BindException) ex, request, response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (ex <span class="keyword">instanceof</span> NoHandlerFoundException) &#123;</span><br><span class="line">			<span class="keyword">return</span> handleNoHandlerFoundException((NoHandlerFoundException) ex, request, response, handler);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (Exception handlerException) &#123;</span><br><span class="line">		logger.warn(<span class="string">"Handling of ["</span> + ex.getClass().getName() + <span class="string">"] resulted in Exception"</span>, handlerException);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Handle the case where a &#123;<span class="doctag">@linkplain</span> org.springframework.http.converter.HttpMessageConverter message converter&#125;</span></span><br><span class="line"><span class="comment"> * cannot write to a HTTP request.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;The default implementation sends an HTTP 500 error, and returns an empty &#123;<span class="doctag">@code</span> ModelAndView&#125;.</span></span><br><span class="line"><span class="comment"> * Alternatively, a fallback view could be chosen, or the HttpMediaTypeNotSupportedException could be</span></span><br><span class="line"><span class="comment"> * rethrown as-is.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> ex the HttpMessageNotWritableException to be handled</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> request current HTTP request</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> response current HTTP response</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> handler the executed handler</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> an empty ModelAndView indicating the exception was handled</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException potentially thrown from response.sendError()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> ModelAndView <span class="title">handleHttpMessageNotWritable</span><span class="params">(HttpMessageNotWritableException ex,</span></span></span><br><span class="line"><span class="function"><span class="params">		HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">	sendServerError(ex, request, response);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> ModelAndView();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在处理一些异常的时候只是返回错误,但却没有任何log.error级别的输出,只有在log4j中将springmvc的异常级别调成debug，才会有输出。<br>后来查到我们后台就是在从对象转json的时候有一个空指针异常，被HttpMessageNotWritableException异常封装，所以才会没有日志输出。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">20:50:37,923 DEBUG DefaultHandlerExceptionResolver:134 - Resolving exception from handler [public com.xx.JsonResponse com.xx.xx.putUserDetail(com.xx.xx,org.springframework.validation.BindingResult,javax.servlet.http.HttpServletRequest)]:</span><br><span class="line"> org.springframework.http.converter.HttpMessageNotWritableException: Could not write JSON: (was java.lang.NullPointerException) (through reference chain: com.xx.JsonResponse["data"]-&gt;com.xx.xx["xx"]-&gt;com.xx.xx["xx"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: (was java.lang.NullPointerException) (through reference chain: com.xx.JsonResponse["data"]-&gt;com.xx.xx["xx"]-&gt;com.xx.model.xx.xx["xx"])</span><br><span class="line">20:50:39,092 DEBUG DispatcherServlet:1012 - Null ModelAndView returned to DispatcherServlet with name 'springServlet': assuming HandlerAdapter completed request handling</span><br></pre></td></tr></table></figure>
+<p>（后来查到我们后台就是在从对象转json的时候有一个空指针异常，被HttpMessageNotWritableException异常封装，所以才会没有日志输出。）</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>虽然可以通过debug来查出异常，但肯定不是我想要的。如何才能在生产环境也能输出异常信息呢？</p>
+<p>很简单，只要让我们的自定义exceptionHandler放在handlerExceptionResolvers列的第一位就可以,所以的exceptionHandler都实现了Ordered接口，可以定义优先级，spring默认的几个handler，都比较良心的设置成最低</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Sets the &#123;<span class="doctag">@linkplain</span> #setOrder(int) order&#125; to &#123;<span class="doctag">@link</span> #LOWEST_PRECEDENCE&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">DefaultHandlerExceptionResolver</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	setOrder(Ordered.LOWEST_PRECEDENCE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们只要在自定义exceptionHandler的构造函数中，把优先级设置成最高，就可以了。下图是设置好之后DispathServlet处理异常时的顺序</p>
+<p><img src="!--￼7--&gt;/springmvc-exception2.png" alt="2"></p>
+<p>这样所有的异常都由我们监控，输出异常日志也就简单了。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/spring/" rel="tag"># spring</a>
+          
+            <a href="/tags/web/" rel="tag"># web</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/10/02/httpclient/" rel="next" title="HttpClient相关优化">
+                <i class="fa fa-chevron-left"></i> HttpClient相关优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/12/05/spring-websocket-chat/" rel="prev" title="基于spring websocket开发聊天功能的研究实战">
+                基于spring websocket开发聊天功能的研究实战 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="zhaohaifeng">
+            
+              <p class="site-author-name" itemprop="name">zhaohaifeng</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#spring-mvc-异常处理机制"><span class="nav-number">1.</span> <span class="nav-text">spring mvc 异常处理机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhaohaifeng</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.0"></script>
+
+  <script src="/js/motion.js?v=7.1.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.0"></script>
+<script src="/js/post-details.js?v=7.1.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
